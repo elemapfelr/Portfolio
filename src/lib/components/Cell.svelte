@@ -17,7 +17,7 @@
 		: j === 15
 			? 'right'
 			: ''}"
-	on:click|once={() => {
+	on:click={() => {
 		handleCellClick(i, j);
 	}}
 >

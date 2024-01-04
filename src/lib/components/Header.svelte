@@ -1,17 +1,5 @@
 <header>
-	<nav>
-		<ul>
-			<li>
-				<a href="/">Rules</a>
-			</li>
-			<li>
-				<a href="/">About</a>
-			</li>
-			<li>
-				<a href="/">Multi Play</a>
-			</li>
-		</ul>
-	</nav>
+	<h1>OMOC</h1>
 </header>
 
 <style lang="scss">
@@ -20,9 +8,5 @@
 		align-items: center;
 		justify-content: center;
 		margin-bottom: 10px;
-		ul {
-			display: flex;
-			column-gap: 10px;
-		}
 	}
 </style>
