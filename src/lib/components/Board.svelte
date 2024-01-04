@@ -22,7 +22,9 @@
 		if (cells[row][col] === null) {
 			cells[row][col] = turn;
 			checkForWin(cells, boardSize, turn, row, col, setWinningStonesAndWinner);
-			turn = turn == 'black' ? 'white' : 'black';
+			if (!winner) {
+				turn = turn == 'black' ? 'white' : 'black';
+			}
 		}
 	}
 
