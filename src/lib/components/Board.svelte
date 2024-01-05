@@ -110,7 +110,7 @@
 		<p class="userName">name</p>
 	</div>
 </div>
-
+<button>Online Play</button>
 {#if end}
 	<button class="w-btn-neon2" on:click={resetGame}> Play Again! </button>
 {/if}
