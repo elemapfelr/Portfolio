@@ -1,7 +1,8 @@
 <script>
 	import Cell from '$lib/components/Cell.svelte';
 	import Modal from '$lib/components/Modal.svelte';
-	import { checkForWin } from '$lib/js/gameLogic.js';
+	import FbModal from '$lib/components/FbModal.svelte';
+	import { checkForWin, checkForbiddenMoves } from '$lib/js/gameLogic.js';
 
 	let boardSize = 16;
 	let cells = Array(boardSize)
@@ -10,6 +11,7 @@
 
 	$: turn = 'black';
 	$: showModal = false;
+	$: showFBmodal = false;
 	$: winner = '';
 	$: winningStones = [];
 	$: end = false;
@@ -20,6 +22,11 @@
 		// 여기에 게임 로직 추가
 
 		if (cells[row][col] === null) {
+			if (checkForbiddenMoves(cells, boardSize, row, col, turn)) {
+				// 금수의 경우
+				showFBmodal = true;
+				return false;
+			}
 			cells[row][col] = turn;
 			checkForWin(cells, boardSize, turn, row, col, setWinningStonesAndWinner);
 			if (!winner) {
@@ -37,6 +44,10 @@
 	function closeModal() {
 		showModal = false;
 		end = true;
+	}
+
+	function closeFBmodal() {
+		showFBmodal = false;
 	}
 
 	function resetGame() {
@@ -115,6 +126,7 @@
 	<button class="w-btn-neon2" on:click={resetGame}> Play Again! </button>
 {/if}
 <Modal message={`${winner} wins!`} {showModal} onClose={closeModal} playAgain={resetGame} />
+<FbModal message={'3x3, 4x4 금수!'} {showFBmodal} onClose={closeFBmodal} />
 
 <style lang="scss">
 	.flexArea {
