@@ -11,7 +11,7 @@
 {#if showFBModal}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
-	<div transition:fade class="modal-overlay">
+	<div transition:fade={{ duration: 100 }} class="modal-overlay">
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		<div class="modal-content" on:click|stopPropagation>
@@ -32,7 +32,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		background-color: rgba(0, 0, 0, 0.5); /* 투명 배경 */
+		background-color: rgba(0, 0, 0, 0.7); /* 투명 배경 */
 		z-index: 2;
 	}
 

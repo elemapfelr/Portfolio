@@ -1,5 +1,5 @@
 <header>
-	<h1>OMOC</h1>
+	<!-- <h1>OMOC</h1> -->
 </header>
 
 <style lang="scss">

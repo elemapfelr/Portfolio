@@ -11,7 +11,8 @@
 
 	$: turn = 'black';
 	$: showModal = false;
-	$: showFBmodal = false;
+	$: showFBModal = false;
+	$: checkFB = '';
 	$: winner = '';
 	$: winningStones = [];
 	$: end = false;
@@ -22,9 +23,10 @@
 		// 여기에 게임 로직 추가
 
 		if (cells[row][col] === null) {
-			if (checkForbiddenMoves(cells, boardSize, row, col, turn)) {
+			checkFB = checkForbiddenMoves(cells, row, col, turn);
+			if (checkFB) {
 				// 금수의 경우
-				showFBmodal = true;
+				showFBModal = true;
 				return false;
 			}
 			cells[row][col] = turn;
@@ -47,7 +49,7 @@
 	}
 
 	function closeFBmodal() {
-		showFBmodal = false;
+		showFBModal = false;
 	}
 
 	function resetGame() {
@@ -89,20 +91,6 @@
 		{/if}
 		<p class="userName">name</p>
 	</div>
-	<div class="board {end}">
-		{#each cells as row, i}
-			{#each row as _, j}
-				<Cell
-					{i}
-					{j}
-					{handleCellClick}
-					{turn}
-					value={_}
-					isWinningStone={winningStones.some((stone) => stone.r === i && stone.c === j)}
-				/>
-			{/each}
-		{/each}
-	</div>
 	<div class="user whiteUser {turn === 'white' ? ' active' : ''}">
 		{#if winner == 'white'}
 			<div class="userProfile">
@@ -121,23 +109,43 @@
 		<p class="userName">name</p>
 	</div>
 </div>
+<div class="board {end}">
+	{#each cells as row, i}
+		{#each row as _, j}
+			<Cell
+				{i}
+				{j}
+				{handleCellClick}
+				{turn}
+				value={_}
+				isWinningStone={winningStones.some((stone) => stone.r === i && stone.c === j)}
+			/>
+		{/each}
+	{/each}
+</div>
+
 <button>Online Play</button>
 {#if end}
 	<button class="w-btn-neon2" on:click={resetGame}> Play Again! </button>
 {/if}
 <Modal message={`${winner} wins!`} {showModal} onClose={closeModal} playAgain={resetGame} />
-<FbModal message={'3x3, 4x4 금수!'} {showFBmodal} onClose={closeFBmodal} />
+<FbModal message={checkFB} {showFBModal} onClose={closeFBmodal} />
 
 <style lang="scss">
 	.flexArea {
+		width: 80%;
+		margin: 0 auto;
+		margin-bottom: 20px;
 		display: flex;
+		justify-content: space-between;
+		row-gap: 20px;
 		align-items: center;
 		column-gap: 20px;
 
 		.user {
 			border: 1px solid #aaa;
 			border-radius: 10px;
-			padding: 20px;
+			padding: 10px;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
@@ -155,23 +163,23 @@
 			}
 
 			&.active {
-				box-shadow: 12px 12px 24px rgba(79, 209, 197, 0.64);
-				outline: 3px solid #00ffcb;
+				box-shadow: 6px 6px 12px rgba(79, 209, 197, 0.64);
+				outline: 2px solid #00ffcb;
 			}
 
 			.userProfile {
-				width: 100px;
-				height: 100px;
+				width: 50px;
+				height: 50px;
 				background-color: #fff;
 				border: 1px solid #aaa;
-				border-radius: 100px;
+				border-radius: 50px;
 				position: relative;
 				display: flex;
 				align-items: center;
 				justify-content: center;
 
 				p {
-					font-size: 50px;
+					font-size: 25px;
 					margin-bottom: 5px;
 				}
 
@@ -180,22 +188,31 @@
 					left: 10%;
 					transform: rotate(-15deg);
 					position: absolute;
-					font-size: 40px;
+					font-size: 20px;
 				}
 			}
 			.userName {
 				font-weight: bold;
 			}
 		}
+	}
 
-		.board {
-			display: grid;
-			grid-template-columns: repeat(16, 1fr);
-			position: relative;
+	.board {
+		width: 90%;
+		display: grid;
+		grid-template-columns: repeat(16, 1fr);
+		position: relative;
+		background-image: url(./../img/wood_texture.jpg);
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+		box-shadow:
+			3px 7px 10px rgba(0, 0, 0, 0.432),
+			inset 5px 5px 3px rgba(255, 255, 255, 0.5); /* 외부 그림자와 내부 그림자 */
+		border-radius: 5px;
 
-			&.true {
-				pointer-events: none;
-			}
+		&.true {
+			pointer-events: none;
 		}
 	}
 

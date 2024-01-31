@@ -1,5 +1,6 @@
 <script>
-	import { fade } from 'svelte/transition';
+	import { onMount, onDestroy } from 'svelte';
+	import { fade, scale } from 'svelte/transition';
 
 	export let i;
 	export let j;
@@ -7,6 +8,26 @@
 	export let value;
 	export let turn;
 	export let isWinningStone = false;
+
+	let cellElement;
+
+	function updateHeight() {
+		const width = cellElement.offsetWidth;
+		cellElement.style.height = `${width}px`;
+	}
+
+	onMount(() => {
+		if (typeof window !== 'undefined') {
+			window.addEventListener('resize', updateHeight);
+			updateHeight(); // 초기 크기 설정
+		}
+	});
+
+	onDestroy(() => {
+		if (typeof window !== 'undefined') {
+			window.removeEventListener('resize', updateHeight);
+		}
+	});
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -20,9 +41,10 @@
 	on:click={() => {
 		handleCellClick(i, j);
 	}}
+	bind:this={cellElement}
 >
 	{#if value === 'black' || value === 'white'}
-		<span transition:fade class="{value} {isWinningStone ? 'winning' : ''}"></span>
+		<span in:scale={{ start: 2 }} out:fade class="{value} {isWinningStone ? 'winning' : ''}"></span>
 	{:else}
 		<!-- 마우스를 올렸을 때 보여줄 반투명한 원 -->
 		<span class="preview {turn}"></span>
@@ -31,9 +53,8 @@
 
 <style lang="scss">
 	.cell {
-		background-color: #fff;
-		width: 30px;
-		height: 30px;
+		// background-color: #fff;
+		width: 100%;
 		position: relative;
 		border: none;
 		cursor: pointer;
@@ -46,8 +67,8 @@
 			left: 50%;
 			transform: translateX(-50%);
 			width: 1px;
-			height: 30px;
-			background-color: gray;
+			height: 100%;
+			background-color: rgba(61, 32, 19, 0.6);
 		}
 		&::after {
 			content: '';
@@ -56,33 +77,33 @@
 			top: 50%;
 			left: 0;
 			transform: translateY(-50%);
-			width: 30px;
+			width: 100%;
 			height: 1px;
-			background-color: gray;
+			background-color: rgba(61, 32, 19, 0.6);
 		}
 
 		&.top {
 			&::before {
-				height: 15px;
+				height: 50%;
 				top: auto;
 				bottom: 0;
 			}
 		}
 		&.bottom {
 			&::before {
-				height: 15px;
+				height: 50%;
 			}
 		}
 		&.left {
 			&::after {
-				width: 15px;
+				width: 50%;
 				left: auto;
 				right: 0;
 			}
 		}
 		&.right {
 			&::after {
-				width: 15px;
+				width: 50%;
 			}
 		}
 
@@ -100,19 +121,18 @@
 			}
 			&.white {
 				background-color: white;
-				border: 1px solid black; // 흰색 원의 경우 경계가 보이도록 설정합니다.
 			}
 		}
 
 		span.winning {
-			outline: 2px solid red; // 승리한 돌에 빨간색 테두리를 적용합니다.
+			outline: 2px solid #00ffcca9; // 승리한 돌에 빨간색 테두리를 적용합니다.
 		}
 
 		span {
 			display: block;
-			width: 15px;
-			height: 15px;
-			border-radius: 10px;
+			width: 80%;
+			height: 80%;
+			border-radius: 100px;
 			position: absolute;
 			top: 50%;
 			left: 50%;
@@ -120,12 +140,26 @@
 			z-index: 1;
 
 			&.white {
-				background-color: #fff;
-				border: 1px solid black;
+				background: radial-gradient(
+					circle at 8px 8px,
+					#ffffff,
+					#fafafa 10%,
+					#dddddd 50%
+				); /* 광택 효과 */
+				box-shadow:
+					3px 7px 10px rgba(0, 0, 0, 0.432),
+					inset 1px 3px 3px rgba(255, 255, 255, 0.8); /* 외부 그림자와 내부 그림자 */
 			}
 			&.black {
-				background-color: black;
-				border: none;
+				background: radial-gradient(
+					circle at 8px 8px,
+					#b6b6b6,
+					#5c5c5c 10%,
+					#000000 25%
+				); /* 광택 효과 */
+				box-shadow:
+					3px 7px 10px rgba(0, 0, 0, 0.432),
+					inset 1px 2px 2px rgba(255, 255, 255, 0.5); /* 외부 그림자와 내부 그림자 */
 			}
 		}
 	}
