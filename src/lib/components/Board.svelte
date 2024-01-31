@@ -3,6 +3,7 @@
 	import Modal from '$lib/components/Modal.svelte';
 	import FbModal from '$lib/components/FbModal.svelte';
 	import { checkForWin, checkForbiddenMoves } from '$lib/js/gameLogic.js';
+	import { fade } from 'svelte/transition';
 
 	let boardSize = 16;
 	let cells = Array(boardSize)
@@ -91,6 +92,9 @@
 		{/if}
 		<p class="userName">Player 1</p>
 	</div>
+	{#if end}
+		<button class="w-btn-neon2" transition:fade on:click={resetGame}> Play Again! </button>
+	{/if}
 	<div class="user whiteUser {turn === 'white' ? ' active' : ''}">
 		{#if winner == 'white'}
 			<div class="userProfile">
@@ -125,9 +129,6 @@
 </div>
 
 <button class="online">Online Play</button>
-{#if end}
-	<button class="w-btn-neon2" on:click={resetGame}> Play Again! </button>
-{/if}
 <Modal message={`${winner} wins!`} {showModal} onClose={closeModal} playAgain={resetGame} />
 <FbModal message={checkFB} {showFBModal} onClose={closeFBmodal} />
 
@@ -138,6 +139,7 @@
 		margin-bottom: 20px;
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
 		row-gap: 20px;
 		align-items: center;
 		column-gap: 20px;
@@ -218,23 +220,22 @@
 
 	@keyframes ring {
 		0% {
-			width: 30px;
-			height: 30px;
+			width: 20px;
+			height: 20px;
 			opacity: 1;
 		}
 		100% {
-			width: 100px;
-			height: 100px;
+			width: 80px;
+			height: 80px;
 			opacity: 0;
 		}
 	}
 
 	.w-btn-neon2 {
-		margin-top: 50px;
 		position: relative;
 		border: none;
-		min-width: 200px;
-		min-height: 50px;
+		min-width: 120px;
+		min-height: 30px;
 		background: linear-gradient(90deg, rgba(129, 230, 217, 1) 0%, rgba(79, 209, 197, 1) 100%);
 		border-radius: 1000px;
 		color: darkslategray;
@@ -253,7 +254,7 @@
 		width: 30px;
 		height: 30px;
 		border-radius: 100%;
-		border: 6px solid #00ffcb;
+		border: 3px solid #00ffcb;
 		position: absolute;
 		z-index: -1;
 		top: 50%;
