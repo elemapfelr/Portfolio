@@ -89,7 +89,7 @@
 				<p>😗</p>
 			</div>
 		{/if}
-		<p class="userName">name</p>
+		<p class="userName">Player 1</p>
 	</div>
 	<div class="user whiteUser {turn === 'white' ? ' active' : ''}">
 		{#if winner == 'white'}
@@ -106,7 +106,7 @@
 				<p>🙂</p>
 			</div>
 		{/if}
-		<p class="userName">name</p>
+		<p class="userName">Player 2</p>
 	</div>
 </div>
 <div class="board {end}">
@@ -124,7 +124,7 @@
 	{/each}
 </div>
 
-<button>Online Play</button>
+<button class="online">Online Play</button>
 {#if end}
 	<button class="w-btn-neon2" on:click={resetGame}> Play Again! </button>
 {/if}
@@ -260,5 +260,59 @@
 		left: 50%;
 		transform: translate(-50%, -50%);
 		animation: ring 1.5s infinite;
+	}
+
+	.online {
+		$bg: #fff;
+		$fg: #06c17f;
+		$border-width: 3px;
+		$corner-size: 20px;
+		$dur: 0.3s;
+
+		margin-top: 30px;
+		letter-spacing: 0.02rem;
+		cursor: pointer;
+		background: transparent;
+		border: $border-width solid currentColor;
+		padding: 10px 20px;
+		font-size: 12px;
+		color: $fg;
+		position: relative;
+		transition: color $dur;
+		z-index: 1;
+
+		&:hover {
+			color: rgb(56, 202, 212);
+			&::before {
+				width: 0;
+			}
+			&::after {
+				height: 0;
+			}
+		}
+
+		&::before,
+		&::after {
+			content: '';
+			position: absolute;
+			background: $bg;
+			z-index: -1;
+			transition: all $dur;
+		}
+		//the 101% is because of a pixel rounding issue in firefox
+		&::before {
+			width: calc(100% - #{$corner-size});
+			height: calc(101% + #{$border-width * 2});
+			top: -$border-width;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+		&::after {
+			height: calc(100% - #{$corner-size});
+			width: calc(101% + #{$border-width * 2});
+			left: -$border-width;
+			top: 50%;
+			transform: translateY(-50%);
+		}
 	}
 </style>
