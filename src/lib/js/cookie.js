@@ -6,7 +6,8 @@ function getId(name) {
 
 export function setId(id, ts) {
 	// 브라우저에 한달간 저장
-	document.cookie = `omockId=${id}; timestamp=${ts}; path=/; max-age=2629800;`;
+	document.cookie = `omockId=${id}; path=/; max-age=2629800;`;
+	document.cookie = `omockTs=${ts}; path=/; max-age=2629800;`;
 }
 
 export function checkId() {
@@ -14,5 +15,5 @@ export function checkId() {
 }
 
 export function checkTs() {
-	return getId('timestamp');
+	return getId('omockTs');
 }

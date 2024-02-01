@@ -8,8 +8,10 @@
 	export let onClose = () => {};
 	export let socket;
 	export let gameReq = null;
-
+	export let resOfRequest = null;
+	
 	$: requesting = false;
+	$: gameMatched = false;
 
 	let selectedItem = null;
 
@@ -45,8 +47,41 @@
 		socket.send(JSON.stringify(msg));
 	}
 
-	function closeGameReq() {
+	function closeCancelAlert() {
 		gameReq = null;
+	}
+
+	function rejectReq(){
+		const msg = {
+			type: 'GAMEREQUEST_REJECT',
+			data: {
+				id: checkId(),
+				unique: checkTs(),
+				targetId: gameReq.requesterId,
+				targetUnique: gameReq.requesterUnique
+			}
+		};
+		socket.send(JSON.stringify(msg));
+		gameReq = null;
+	}
+
+	function closeRejectAlert(){
+		requesting = null;
+		resOfRequest = null;
+	}
+
+	function acceptReq(){
+		const msg = {
+			type: 'GAMEREQUEST_ACCEPT',
+			data: {
+				id: checkId(),
+				unique: checkTs(),
+				targetId: gameReq.requesterId,
+				targetUnique: gameReq.requesterUnique
+			}
+		};
+		socket.send(JSON.stringify(msg));
+		gameMatched = true;
 	}
 </script>
 
@@ -58,6 +93,25 @@
 		<!-- svelte-ignore a11y-click-events-have-key-events -->
 		<!-- svelte-ignore a11y-no-static-element-interactions -->
 		{#if requesting}
+			{#if resOfRequest}
+				{#if resOfRequest.accepted}
+				<div class="requestingModal" on:click|stopPropagation>
+					<h5>Request Accepted</h5>
+					<p>{resOfRequest.accepterId} accepted your challenge!<br>
+					READY TO FIGHT🔥</p>
+					<span>Preparing...</span>
+				</div>
+				{:else if resOfRequest.rejected}
+				<div class="requestingModal" on:click|stopPropagation>
+					<h5>Request Rejected</h5>
+					<p>{resOfRequest.rejecterId} doesn't want to play with you.🤭<br>
+					Look for someone else.</p>
+					<div class="btns">
+						<button class="w-btn-neon1" on:click={closeRejectAlert}>Close</button>
+					</div>
+				</div>
+				{/if}
+			{:else}
 			<div class="requestingModal" on:click|stopPropagation>
 				<h5>Send Request</h5>
 				<p>You sent request to {selectedItem.id}</p>
@@ -66,24 +120,34 @@
 					<button class="w-btn-neon1" on:click={cancelReq}>Cancel</button>
 				</div>
 			</div>
+			{/if}
 		{:else if gameReq}
 			{#if gameReq.canceled}
 				<div class="gameReqModal" on:click|stopPropagation>
 					<h5>Request Canceled</h5>
 					<p>{gameReq.requesterId} canceled challenge.</p>
 					<div class="btns">
-						<button class="w-btn-neon1" on:click={closeGameReq}>Close</button>
+						<button class="w-btn-neon1" on:click={closeCancelAlert}>Close</button>
 					</div>
 				</div>
 			{:else}
+				{#if gameMatched}
+				<div class="gameReqModal" on:click|stopPropagation>
+					<h5>Match Success</h5>
+					<p>Hold on!<br>
+					READY TO FIGHT🔥</p>
+					<span>Preparing...</span>
+				</div>
+				{:else}
 				<div class="gameReqModal" on:click|stopPropagation>
 					<h5>New Request!</h5>
 					<p>{gameReq.requesterId} Challenged you!</p>
 					<div class="btns">
-						<button class="w-btn-neon2">Accept</button>
-						<button class="w-btn-neon1">Reject</button>
+						<button class="w-btn-neon2" on:click={acceptReq}>Accept</button>
+						<button class="w-btn-neon1" on:click={rejectReq}>Reject</button>
 					</div>
 				</div>
+				{/if}
 			{/if}
 		{:else}
 			<div class="modal-content" on:click|stopPropagation>
@@ -91,6 +155,7 @@
 				{#if onlineUsersExceptMe.length > 0}
 					<ul>
 						{#each onlineUsersExceptMe as user}
+							<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 							<li class:selected={selectedItem === user} on:click={() => selectUser(user)}>
 								<div class="circle"></div>
 								<span>{user.id}</span>
@@ -139,7 +204,7 @@
 			}
 
 			p {
-				font-size: 40px;
+				font-size: 25px;
 				font-weight: bold;
 				color: black;
 				cursor: default;

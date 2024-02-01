@@ -27,6 +27,7 @@
 	$: onlineUsersExceptMe = [];
 	$: idCookie = '';
 	$: gameReq = null;
+	$: resOfRequest = null;
 
 	let socket;
 
@@ -138,6 +139,14 @@
 					let cancelData = { ...recieved.data, canceled: true };
 					gameReq = cancelData;
 					break;
+				case 'REQUEST_REJECTED':
+					let rejectData = { ...recieved.data, rejected: true };
+					resOfRequest = rejectData;
+					break;
+				case 'REQUEST_ACCEPTED':
+					let acceptedData = { ...recieved.data, accepted: true };
+					resOfRequest = acceptedData;
+					break;
 			}
 		};
 
@@ -211,6 +220,7 @@
 <FbModal message={checkFB} {showFBModal} onClose={closeFBmodal} />
 <SetIdModal show={showSetIdModal} {idCookie} onSave={setIdAndConnect} close={clostSetIdModal} />
 <OnlineModal
+	{resOfRequest}
 	{gameReq}
 	{onlineUsersExceptMe}
 	{showOnlineModal}
@@ -220,7 +230,7 @@
 
 <style lang="scss">
 	.flexArea {
-		width: 80%;
+		width: 90%;
 		max-width: 600px;
 		margin: 0 auto;
 		margin-bottom: 20px;
@@ -281,6 +291,7 @@
 				}
 			}
 			.userName {
+				font-size: 14px;
 				font-weight: bold;
 			}
 		}
