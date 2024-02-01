@@ -24,7 +24,7 @@ function find1(board, x, y, currentPlayer, otherPlayer) {
 			stone1++;
 		} else if (board[y][xx] === otherPlayer) {
 			break;
-		} else if (board[y][xx] === 0) {
+		} else if (board[y][xx] === null) {
 			if (!check) {
 				check = true;
 			} else {
@@ -46,7 +46,7 @@ function find1(board, x, y, currentPlayer, otherPlayer) {
 			stone2++;
 		} else if (board[y][xx] === otherPlayer) {
 			break;
-		} else if (board[y][xx] === 0) {
+		} else if (board[y][xx] === null) {
 			if (!check) {
 				check = true;
 			} else {
@@ -84,7 +84,7 @@ function find2(board, x, y, currentPlayer, otherPlayer) {
 			stone1++;
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
-		} else if (board[yy][xx] === 0) {
+		} else if (board[yy][xx] === null) {
 			if (!check) {
 				check = true;
 			} else {
@@ -108,7 +108,7 @@ function find2(board, x, y, currentPlayer, otherPlayer) {
 			stone2++;
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
-		} else if (board[yy][xx] === 0) {
+		} else if (board[yy][xx] === null) {
 			if (!check) {
 				check = true;
 			} else {
@@ -151,7 +151,7 @@ function find3(board, x, y, currentPlayer, otherPlayer) {
 			stone1++;
 		} else if (board[yy][x] === otherPlayer) {
 			break;
-		} else if (board[yy][x] === 0) {
+		} else if (board[yy][x] === null) {
 			if (!check) {
 				check = true;
 			} else {
@@ -173,7 +173,7 @@ function find3(board, x, y, currentPlayer, otherPlayer) {
 			stone2++;
 		} else if (board[yy][x] === otherPlayer) {
 			break;
-		} else if (board[yy][x] === 0) {
+		} else if (board[yy][x] === null) {
 			if (!check) {
 				check = true;
 			} else {
@@ -215,7 +215,7 @@ function find4(board, x, y, currentPlayer, otherPlayer) {
 			stone1++;
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
-		} else if (board[yy][xx] === 0) {
+		} else if (board[yy][xx] === null) {
 			if (!check) {
 				check = true;
 			} else {
@@ -239,7 +239,7 @@ function find4(board, x, y, currentPlayer, otherPlayer) {
 			stone2++;
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
-		} else if (board[yy][xx] === 0) {
+		} else if (board[yy][xx] === null) {
 			if (!check) {
 				check = true;
 			} else {
@@ -296,7 +296,7 @@ function fourORjang1(board, x, y, currentPlayer, otherPlayer, trigger) {
 			stone1++;
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
-		} else if (board[yy][xx] === 0) {
+		} else if (board[yy][xx] === null) {
 			if (!check) {
 				check = true;
 			} else {
@@ -317,7 +317,7 @@ function fourORjang1(board, x, y, currentPlayer, otherPlayer, trigger) {
 			stone2++;
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
-		} else if (board[yy][xx] === 0) {
+		} else if (board[yy][xx] === null) {
 			if (!check) {
 				check = true;
 			} else {
@@ -363,7 +363,7 @@ function fourORjang2(board, x, y, currentPlayer, otherPlayer, trigger) {
 			stone1++;
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
-		} else if (board[yy][xx] === 0) {
+		} else if (board[yy][xx] === null) {
 			if (!check) {
 				check = true;
 			} else {
@@ -386,7 +386,7 @@ function fourORjang2(board, x, y, currentPlayer, otherPlayer, trigger) {
 			stone2++;
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
-		} else if (board[yy][xx] === 0) {
+		} else if (board[yy][xx] === null) {
 			if (!check) {
 				check = true;
 			} else {
@@ -433,7 +433,7 @@ function fourORjang3(board, x, y, currentPlayer, otherPlayer, trigger) {
 			stone1++;
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
-		} else if (board[yy][xx] === 0) {
+		} else if (board[yy][xx] === null) {
 			if (!check) {
 				check = true;
 			} else {
@@ -454,7 +454,7 @@ function fourORjang3(board, x, y, currentPlayer, otherPlayer, trigger) {
 			stone2++;
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
-		} else if (board[yy][xx] === 0) {
+		} else if (board[yy][xx] === null) {
 			if (!check) {
 				check = true;
 			} else {
@@ -500,7 +500,7 @@ function fourORjang4(board, x, y, currentPlayer, otherPlayer, trigger) {
 			stone1++;
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
-		} else if (board[yy][xx] === 0) {
+		} else if (board[yy][xx] === null) {
 			if (!check) {
 				check = true;
 			} else {
@@ -523,7 +523,7 @@ function fourORjang4(board, x, y, currentPlayer, otherPlayer, trigger) {
 			stone2++;
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
-		} else if (board[yy][xx] === 0) {
+		} else if (board[yy][xx] === null) {
 			if (!check) {
 				check = true;
 			} else {

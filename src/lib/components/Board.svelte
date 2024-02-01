@@ -4,6 +4,10 @@
 	import FbModal from '$lib/components/FbModal.svelte';
 	import { checkForWin, checkForbiddenMoves } from '$lib/js/gameLogic.js';
 	import { fade } from 'svelte/transition';
+	import OnlineModal from '$lib/components/OnlineModal.svelte';
+	import SetIdModal from '$lib/components/SetIdModal.svelte';
+	import { setId, checkId, checkTs } from '$lib/js/cookie.js';
+	import timestamp from '$lib/js/timestamp.js';
 
 	let boardSize = 16;
 	let cells = Array(boardSize)
@@ -13,10 +17,18 @@
 	$: turn = 'black';
 	$: showModal = false;
 	$: showFBModal = false;
+	$: showOnlineModal = false;
+	$: showSetIdModal = false;
 	$: checkFB = '';
 	$: winner = '';
 	$: winningStones = [];
 	$: end = false;
+	$: onlineUsers = [];
+	$: onlineUsersExceptMe = [];
+	$: idCookie = '';
+	$: gameReq = null;
+
+	let socket;
 
 	// 셀 클릭 시 이벤트 처리
 	function handleCellClick(row, col) {
@@ -53,6 +65,15 @@
 		showFBModal = false;
 	}
 
+	function closeOnlinemodal() {
+		showOnlineModal = false;
+		socket.close();
+	}
+
+	function clostSetIdModal() {
+		showSetIdModal = false;
+	}
+
 	function resetGame() {
 		// 게임 리셋
 		cells = cells.map((row) => row.fill(null));
@@ -71,6 +92,63 @@
 		let emojis = win ? winEmojis : loseEmojis;
 		const randomIndex = Math.floor(Math.random() * emojis.length);
 		return emojis[randomIndex];
+	}
+
+	function onlineClick() {
+		idCookie = checkId();
+		showSetIdModal = true;
+	}
+
+	function setIdAndConnect(id) {
+		let ts = timestamp();
+		setId(id, ts);
+		showSetIdModal = false;
+		connectWebSocket(id, ts);
+		showOnlineModal = true;
+	}
+
+	function connectWebSocket(omockId, timestamp) {
+		let scheme = location.protocol === 'https:' ? 'wss:' : 'ws:';
+		let socketUrl = `${scheme}//${location.hostname}:3001`;
+
+		socket = new WebSocket(socketUrl);
+
+		socket.onopen = function (e) {
+			const msg = {
+				type: 'JOIN',
+				data: { id: omockId, unique: timestamp }
+			};
+			socket.send(JSON.stringify(msg));
+			console.log('Connection established!');
+		};
+
+		socket.onmessage = function (event) {
+			const recieved = JSON.parse(event.data);
+			switch (recieved.type) {
+				case 'ONLINE_USERS':
+					onlineUsers = recieved.data;
+					onlineUsersExceptMe = onlineUsers.filter(
+						(x) => x.id !== checkId() && x.unique !== checkTs()
+					);
+					break;
+				case 'NEWREQUEST':
+					gameReq = recieved.data;
+					break;
+				case 'REQUEST_CANCELED':
+					let cancelData = { ...recieved.data, canceled: true };
+					gameReq = cancelData;
+					break;
+			}
+		};
+
+		socket.onclose = () => {
+			console.log('Disconnected from the server');
+			onlineUsers = [];
+		};
+
+		socket.onerror = function (error) {
+			console.error(`WebSocket Error: ${error.message}`);
+		};
 	}
 </script>
 
@@ -128,13 +206,22 @@
 	{/each}
 </div>
 
-<button class="online">Online Play</button>
+<button class="online" on:click={onlineClick}>Online Play</button>
 <Modal message={`${winner} wins!`} {showModal} onClose={closeModal} playAgain={resetGame} />
 <FbModal message={checkFB} {showFBModal} onClose={closeFBmodal} />
+<SetIdModal show={showSetIdModal} {idCookie} onSave={setIdAndConnect} close={clostSetIdModal} />
+<OnlineModal
+	{gameReq}
+	{onlineUsersExceptMe}
+	{showOnlineModal}
+	onClose={closeOnlinemodal}
+	{socket}
+/>
 
 <style lang="scss">
 	.flexArea {
 		width: 80%;
+		max-width: 600px;
 		margin: 0 auto;
 		margin-bottom: 20px;
 		display: flex;
@@ -201,6 +288,7 @@
 
 	.board {
 		width: 90%;
+		max-width: 600px;
 		display: grid;
 		grid-template-columns: repeat(16, 1fr);
 		position: relative;

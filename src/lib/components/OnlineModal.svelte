@@ -1,0 +1,269 @@
+<!-- Modal.svelte -->
+<script>
+	import { fade } from 'svelte/transition';
+	import { checkId, checkTs } from '$lib/js/cookie.js';
+
+	export let onlineUsersExceptMe = [];
+	export let showOnlineModal = false;
+	export let onClose = () => {};
+	export let socket;
+	export let gameReq = null;
+
+	$: requesting = false;
+
+	let selectedItem = null;
+
+	function selectUser(user) {
+		selectedItem = user;
+	}
+
+	function sendRequest() {
+		requesting = true;
+		const msg = {
+			type: 'GAMEREQUEST',
+			data: {
+				id: checkId(),
+				unique: checkTs(),
+				targetId: selectedItem.id,
+				targetUnique: selectedItem.unique
+			}
+		};
+		socket.send(JSON.stringify(msg));
+	}
+
+	function cancelReq() {
+		requesting = false;
+		const msg = {
+			type: 'GAMEREQUEST_CANCEL',
+			data: {
+				id: checkId(),
+				unique: checkTs(),
+				targetId: selectedItem.id,
+				targetUnique: selectedItem.unique
+			}
+		};
+		socket.send(JSON.stringify(msg));
+	}
+
+	function closeGameReq() {
+		gameReq = null;
+	}
+</script>
+
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+{#if showOnlineModal}
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<!-- svelte-ignore a11y-no-static-element-interactions -->
+	<div transition:fade={{ duration: 100 }} class="modal-overlay">
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<!-- svelte-ignore a11y-no-static-element-interactions -->
+		{#if requesting}
+			<div class="requestingModal" on:click|stopPropagation>
+				<h5>Send Request</h5>
+				<p>You sent request to {selectedItem.id}</p>
+				<span>Waiting...</span>
+				<div class="btns">
+					<button class="w-btn-neon1" on:click={cancelReq}>Cancel</button>
+				</div>
+			</div>
+		{:else if gameReq}
+			{#if gameReq.canceled}
+				<div class="gameReqModal" on:click|stopPropagation>
+					<h5>Request Canceled</h5>
+					<p>{gameReq.requesterId} canceled challenge.</p>
+					<div class="btns">
+						<button class="w-btn-neon1" on:click={closeGameReq}>Close</button>
+					</div>
+				</div>
+			{:else}
+				<div class="gameReqModal" on:click|stopPropagation>
+					<h5>New Request!</h5>
+					<p>{gameReq.requesterId} Challenged you!</p>
+					<div class="btns">
+						<button class="w-btn-neon2">Accept</button>
+						<button class="w-btn-neon1">Reject</button>
+					</div>
+				</div>
+			{/if}
+		{:else}
+			<div class="modal-content" on:click|stopPropagation>
+				<h5>Online Users</h5>
+				{#if onlineUsersExceptMe.length > 0}
+					<ul>
+						{#each onlineUsersExceptMe as user}
+							<li class:selected={selectedItem === user} on:click={() => selectUser(user)}>
+								<div class="circle"></div>
+								<span>{user.id}</span>
+							</li>
+						{/each}
+					</ul>
+					{#if selectedItem !== null}
+						<button transition:fade={{ duration: 100 }} class="w-btn-neon2" on:click={sendRequest}
+							>Play!</button
+						>
+					{/if}
+				{:else}
+					<p>No users online.</p>
+				{/if}
+			</div>
+			<button class="w-btn-neon1" on:click={onClose}>Close</button>
+		{/if}
+	</div>
+{/if}
+
+<style lang="scss">
+	.modal-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		background-color: rgba(0, 0, 0, 0.7); /* 투명 배경 */
+		z-index: 2;
+
+		.modal-content {
+			width: 300px;
+			min-height: 150px;
+			background-color: #ececec;
+			padding: 20px;
+			border-radius: 10px;
+			text-align: center;
+			margin-bottom: 30px;
+
+			h5 {
+				margin-bottom: 10px;
+			}
+
+			p {
+				font-size: 40px;
+				font-weight: bold;
+				color: black;
+				cursor: default;
+			}
+
+			ul {
+				display: flex;
+				column-gap: 20px;
+				row-gap: 20px;
+
+				li {
+					background: #ffffff;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					justify-content: center;
+					padding: 10px;
+					box-sizing: border-box;
+					border-radius: 10px;
+					box-shadow: 2px 2px 4px #c4c4c4;
+
+					&.selected {
+						outline: 2px solid #afeafc;
+						box-shadow: 2px 2px 6px #a1c4fd;
+					}
+
+					.circle {
+						width: 50px;
+						height: 50px;
+						border-radius: 50px;
+					}
+
+					span {
+						display: block;
+						margin: 5px auto 0;
+						color: black;
+						font-size: 12px;
+						font-weight: normal;
+					}
+
+					$colors: (
+						#ff9a9e #fad0c4,
+						#a18cd1 #fbc2eb,
+						#fad0c4 #ffd1ff,
+						#ffecd2 #fcb69f,
+						#ff9a9e #fecfef,
+						#f6d365 #fda085,
+						#fbc2eb #a6c1ee,
+						#fdcbf1 #e6dee9,
+						#a1c4fd #c2e9fb,
+						#d4fc79 #96e6a1
+					);
+					@each $gradient in $colors {
+						$index: index($colors, $gradient);
+						&:nth-child(#{$index}) {
+							.circle {
+								background: linear-gradient(45deg, nth($gradient, 1) 0%, nth($gradient, 2) 100%);
+							}
+						}
+					}
+				}
+			}
+		}
+		.requestingModal,
+		.gameReqModal {
+			width: 300px;
+			min-height: 150px;
+			background-color: #ececec;
+			padding: 20px;
+			border-radius: 10px;
+			text-align: center;
+
+			h5 {
+				margin-bottom: 10px;
+			}
+
+			p {
+				font-size: 16px;
+				font-weight: bold;
+				color: black;
+				cursor: default;
+			}
+
+			span {
+				margin-top: 15px;
+				font-size: 12px;
+			}
+
+			.btns {
+				margin-top: 30px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				column-gap: 20px;
+
+				.w-btn-neon1,
+				.w-btn-neon2 {
+					margin: 0;
+				}
+			}
+		}
+	}
+
+	.w-btn-neon1 {
+		border: none;
+		min-width: 100px;
+		min-height: 30px;
+		background: linear-gradient(90deg, rgb(230, 129, 205) 0%, rgb(209, 79, 79) 100%);
+		border-radius: 1000px;
+		color: rgb(79, 47, 47);
+		cursor: pointer;
+		box-shadow: 6px 6px 12px rgba(209, 79, 90, 0.64);
+		font-weight: 700;
+	}
+	.w-btn-neon2 {
+		border: none;
+		min-width: 100px;
+		min-height: 30px;
+		background: linear-gradient(90deg, rgb(129, 173, 230) 0%, rgb(79, 209, 138) 100%);
+		border-radius: 1000px;
+		color: rgb(34, 28, 58);
+		cursor: pointer;
+		box-shadow: 2px 2px 8px rgba(79, 183, 209, 0.64);
+		font-weight: 700;
+		margin: 10px auto 0;
+	}
+</style>
