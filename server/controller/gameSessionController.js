@@ -73,6 +73,8 @@ function gameSessionTerminate(leaveData) {
 		};
 		opponent.send(JSON.stringify(msg));
 		delete gameSessions[sessionId]; // 세션 삭제
+		delete player1.sessionId;
+		delete player2.sessionId;
 	}
 }
 
@@ -102,6 +104,8 @@ function wasGaming(ws) {
 		};
 		opponent.send(JSON.stringify(msg));
 		delete gameSessions[sessionId]; // 세션 삭제
+		delete player1.sessionId;
+		delete player2.sessionId;
 	}
 }
 

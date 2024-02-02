@@ -217,6 +217,7 @@
 							: gameStartData.player2;
 					// 게임 UI 초기화 및 게임 준비
 					initializeGameUI(gameStartData);
+					requesting = null;
 					break;
 				case 'OPPONENT_MOVE':
 					let opponentMoveData = recieved.data;
