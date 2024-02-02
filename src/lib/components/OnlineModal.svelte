@@ -9,9 +9,8 @@
 	export let socket;
 	export let gameReq = null;
 	export let resOfRequest = null;
-	
-	$: requesting = false;
-	$: gameMatched = false;
+	export let requesting = false;
+	export let gameMatched = false;
 
 	let selectedItem = null;
 
@@ -51,7 +50,7 @@
 		gameReq = null;
 	}
 
-	function rejectReq(){
+	function rejectReq() {
 		const msg = {
 			type: 'GAMEREQUEST_REJECT',
 			data: {
@@ -65,12 +64,12 @@
 		gameReq = null;
 	}
 
-	function closeRejectAlert(){
+	function closeRejectAlert() {
 		requesting = null;
 		resOfRequest = null;
 	}
 
-	function acceptReq(){
+	function acceptReq() {
 		const msg = {
 			type: 'GAMEREQUEST_ACCEPT',
 			data: {
@@ -95,31 +94,35 @@
 		{#if requesting}
 			{#if resOfRequest}
 				{#if resOfRequest.accepted}
-				<div class="requestingModal" on:click|stopPropagation>
-					<h5>Request Accepted</h5>
-					<p>{resOfRequest.accepterId} accepted your challenge!<br>
-					READY TO FIGHT🔥</p>
-					<span>Preparing...</span>
-				</div>
-				{:else if resOfRequest.rejected}
-				<div class="requestingModal" on:click|stopPropagation>
-					<h5>Request Rejected</h5>
-					<p>{resOfRequest.rejecterId} doesn't want to play with you.🤭<br>
-					Look for someone else.</p>
-					<div class="btns">
-						<button class="w-btn-neon1" on:click={closeRejectAlert}>Close</button>
+					<div class="requestingModal" on:click|stopPropagation>
+						<h5>Request Accepted</h5>
+						<p>
+							{resOfRequest.accepterId} accepted your challenge!<br />
+							READY TO FIGHT🔥
+						</p>
+						<span>Preparing...</span>
 					</div>
-				</div>
+				{:else if resOfRequest.rejected}
+					<div class="requestingModal" on:click|stopPropagation>
+						<h5>Request Rejected</h5>
+						<p>
+							{resOfRequest.rejecterId} doesn't want to play with you.🤭<br />
+							Look for someone else.
+						</p>
+						<div class="btns">
+							<button class="w-btn-neon1" on:click={closeRejectAlert}>Close</button>
+						</div>
+					</div>
 				{/if}
 			{:else}
-			<div class="requestingModal" on:click|stopPropagation>
-				<h5>Send Request</h5>
-				<p>You sent request to {selectedItem.id}</p>
-				<span>Waiting...</span>
-				<div class="btns">
-					<button class="w-btn-neon1" on:click={cancelReq}>Cancel</button>
+				<div class="requestingModal" on:click|stopPropagation>
+					<h5>Send Request</h5>
+					<p>You sent request to {selectedItem.id}</p>
+					<span>Waiting...</span>
+					<div class="btns">
+						<button class="w-btn-neon1" on:click={cancelReq}>Cancel</button>
+					</div>
 				</div>
-			</div>
 			{/if}
 		{:else if gameReq}
 			{#if gameReq.canceled}
@@ -130,15 +133,16 @@
 						<button class="w-btn-neon1" on:click={closeCancelAlert}>Close</button>
 					</div>
 				</div>
-			{:else}
-				{#if gameMatched}
+			{:else if gameMatched}
 				<div class="gameReqModal" on:click|stopPropagation>
 					<h5>Match Success</h5>
-					<p>Hold on!<br>
-					READY TO FIGHT🔥</p>
+					<p>
+						Hold on!<br />
+						READY TO FIGHT🔥
+					</p>
 					<span>Preparing...</span>
 				</div>
-				{:else}
+			{:else}
 				<div class="gameReqModal" on:click|stopPropagation>
 					<h5>New Request!</h5>
 					<p>{gameReq.requesterId} Challenged you!</p>
@@ -147,7 +151,6 @@
 						<button class="w-btn-neon1" on:click={rejectReq}>Reject</button>
 					</div>
 				</div>
-				{/if}
 			{/if}
 		{:else}
 			<div class="modal-content" on:click|stopPropagation>
@@ -156,7 +159,12 @@
 					<ul>
 						{#each onlineUsersExceptMe as user}
 							<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-							<li class:selected={selectedItem === user} on:click={() => selectUser(user)}>
+							<li
+								class="{user.inSession ? 'inSession' : ''} {selectedItem === user
+									? 'selected'
+									: ''}"
+								on:click={() => selectUser(user)}
+							>
 								<div class="circle"></div>
 								<span>{user.id}</span>
 							</li>
@@ -229,6 +237,22 @@
 					&.selected {
 						outline: 2px solid #afeafc;
 						box-shadow: 2px 2px 6px #a1c4fd;
+					}
+
+					&.inSession {
+						pointer-events: none;
+						position: relative;
+						&::after {
+							content: 'Gaming';
+							font-size: 12px;
+							color: #000;
+							display: block;
+							position: absolute;
+							top: 0;
+							right: 0;
+							padding: 2px 5px;
+							background-color: #a1c4fd;
+						}
 					}
 
 					.circle {

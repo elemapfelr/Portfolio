@@ -6,6 +6,7 @@
 	import { fade } from 'svelte/transition';
 	import OnlineModal from '$lib/components/OnlineModal.svelte';
 	import SetIdModal from '$lib/components/SetIdModal.svelte';
+	import LeftSessionModal from '$lib/components/LeftSessionModal.svelte';
 	import { setId, checkId, checkTs } from '$lib/js/cookie.js';
 	import timestamp from '$lib/js/timestamp.js';
 
@@ -14,6 +15,8 @@
 		.fill()
 		.map(() => Array(boardSize).fill(null));
 
+	$: player1UserName = 'Player 1';
+	$: player2UserName = 'Player 2';
 	$: turn = 'black';
 	$: showModal = false;
 	$: showFBModal = false;
@@ -28,11 +31,19 @@
 	$: idCookie = '';
 	$: gameReq = null;
 	$: resOfRequest = null;
+	$: requesting = false;
+	$: gameMatched = false;
+	$: currentSession = null;
+	$: currentUser = null;
+	$: itsOnline = false;
+	$: boardDisabled = '';
+	$: leftSessionAlert = false;
+	$: terminated = null;
 
 	let socket;
 
 	// 셀 클릭 시 이벤트 처리
-	function handleCellClick(row, col) {
+	function handleCellClick(row, col, online = false) {
 		console.log(`Cell clicked: Row ${row}, Col ${col}`);
 		// 여기에 게임 로직 추가
 
@@ -44,6 +55,17 @@
 				return false;
 			}
 			cells[row][col] = turn;
+
+			if (online) {
+				// 본인 턴에 수를 놓으면 보드 비활성화
+				boardDisabled = 'boardDisabled';
+				const msg = {
+					type: 'MAKE_MOVE',
+					data: { sessionId: currentSession, sendUser: currentUser, x: col, y: row }
+				};
+				socket.send(JSON.stringify(msg));
+			}
+
 			checkForWin(cells, boardSize, turn, row, col, setWinningStonesAndWinner);
 			if (!winner) {
 				turn = turn == 'black' ? 'white' : 'black';
@@ -53,7 +75,14 @@
 
 	function setWinningStonesAndWinner(winningStonesArray, winnerTurn) {
 		winningStones = winningStonesArray;
-		winner = winnerTurn;
+		winner = winnerTurn === 'black' ? 'Player 1' : 'Player 2';
+		if (itsOnline) {
+			if (currentUser.turn === 'black') {
+				winner = winnerTurn === 'black' ? player1UserName : player2UserName;
+			} else {
+				winner = winnerTurn === 'white' ? player2UserName : player1UserName;
+			}
+		}
 		showModal = true;
 	}
 
@@ -68,6 +97,7 @@
 
 	function closeOnlinemodal() {
 		showOnlineModal = false;
+		itsOnline = false;
 		socket.close();
 	}
 
@@ -96,8 +126,39 @@
 	}
 
 	function onlineClick() {
-		idCookie = checkId();
-		showSetIdModal = true;
+		if (itsOnline) {
+			leftSessionAlert = true;
+		} else {
+			idCookie = checkId();
+			showSetIdModal = true;
+		}
+	}
+
+	function leaveGame() {
+		resetGame();
+		player1UserName = 'Player 1';
+		player2UserName = 'Player 2';
+		boardDisabled = '';
+		leftSessionAlert = false;
+		if (!terminated) {
+			const msg = {
+				type: 'LEAVE_GAME',
+				data: {
+					sessionId: currentSession,
+					id: currentUser.id,
+					unique: currentUser.unique,
+					turn: currentUser.turn
+				}
+			};
+			socket.send(JSON.stringify(msg));
+		}
+		currentSession = null;
+		currentUser = null;
+		gameReq = null;
+		resOfRequest = null;
+		requesting = null;
+		gameMatched = false;
+		showOnlineModal = true;
 	}
 
 	function setIdAndConnect(id) {
@@ -147,6 +208,27 @@
 					let acceptedData = { ...recieved.data, accepted: true };
 					resOfRequest = acceptedData;
 					break;
+				case 'GAME_START':
+					let gameStartData = recieved.data;
+					currentSession = gameStartData.sessionId;
+					currentUser =
+						gameStartData.player1.id === checkId() && gameStartData.player1.unique === checkTs()
+							? gameStartData.player1
+							: gameStartData.player2;
+					// 게임 UI 초기화 및 게임 준비
+					initializeGameUI(gameStartData);
+					break;
+				case 'OPPONENT_MOVE':
+					let opponentMoveData = recieved.data;
+					// 상대방의 움직임 처리
+					handleOpponentMove(opponentMoveData);
+					break;
+				case 'SESSION_TERMINATED':
+					// 게임 세션 종료 처리
+					let terminatedData = recieved.data;
+					terminated = terminatedData;
+					leaveGame();
+					break;
 			}
 		};
 
@@ -159,16 +241,44 @@
 			console.error(`WebSocket Error: ${error.message}`);
 		};
 	}
+
+	function initializeGameUI(gameData) {
+		resetGame();
+		if (currentUser.turn === 'black') {
+			player1UserName = currentUser.id;
+			player2UserName = gameData.player2.id;
+		} else {
+			player1UserName = gameData.player1.id;
+			player2UserName = currentUser.id;
+		}
+		if (turn !== currentUser.turn) {
+			boardDisabled = 'boardDisabled';
+		} else {
+			boardDisabled = '';
+		}
+		showOnlineModal = false;
+		itsOnline = true;
+	}
+
+	function handleOpponentMove(moveData) {
+		let opTurn = currentUser.turn === 'black' ? 'white' : 'black';
+		cells[moveData.y][moveData.x] = opTurn;
+		checkForWin(cells, boardSize, opTurn, moveData.y, moveData.x, setWinningStonesAndWinner);
+		if (!winner) {
+			turn = currentUser.turn;
+			boardDisabled = '';
+		}
+	}
 </script>
 
 <div class="flexArea">
 	<div class="user blackUser {turn === 'black' ? ' active' : ''}">
-		{#if winner == 'black'}
+		{#if winner == player1UserName}
 			<div class="userProfile">
 				<span class="emoji">👑</span>
 				<p>{getRandomEmoji(true)}</p>
 			</div>
-		{:else if winner == 'white'}
+		{:else if winner == player2UserName}
 			<div class="userProfile">
 				<p>{getRandomEmoji(false)}</p>
 			</div>
@@ -177,18 +287,18 @@
 				<p>😗</p>
 			</div>
 		{/if}
-		<p class="userName">Player 1</p>
+		<p class="userName">{player1UserName}</p>
 	</div>
 	{#if end}
 		<button class="w-btn-neon2" transition:fade on:click={resetGame}> Play Again! </button>
 	{/if}
 	<div class="user whiteUser {turn === 'white' ? ' active' : ''}">
-		{#if winner == 'white'}
+		{#if winner == player2UserName}
 			<div class="userProfile">
 				<span class="emoji">👑</span>
 				<p>{getRandomEmoji(true)}</p>
 			</div>
-		{:else if winner == 'black'}
+		{:else if winner == player1UserName}
 			<div class="userProfile">
 				<p>{getRandomEmoji(false)}</p>
 			</div>
@@ -197,16 +307,17 @@
 				<p>🙂</p>
 			</div>
 		{/if}
-		<p class="userName">Player 2</p>
+		<p class="userName">{player2UserName}</p>
 	</div>
 </div>
-<div class="board {end}">
+<div transition:fade class="board {end} {boardDisabled}">
 	{#each cells as row, i}
 		{#each row as _, j}
 			<Cell
 				{i}
 				{j}
 				{handleCellClick}
+				{itsOnline}
 				{turn}
 				value={_}
 				isWinningStone={winningStones.some((stone) => stone.r === i && stone.c === j)}
@@ -220,6 +331,8 @@
 <FbModal message={checkFB} {showFBModal} onClose={closeFBmodal} />
 <SetIdModal show={showSetIdModal} {idCookie} onSave={setIdAndConnect} close={clostSetIdModal} />
 <OnlineModal
+	{gameMatched}
+	{requesting}
 	{resOfRequest}
 	{gameReq}
 	{onlineUsersExceptMe}
@@ -227,6 +340,7 @@
 	onClose={closeOnlinemodal}
 	{socket}
 />
+<LeftSessionModal {leftSessionAlert} {leaveGame} {terminated} />
 
 <style lang="scss">
 	.flexArea {
@@ -314,6 +428,10 @@
 
 		&.true {
 			pointer-events: none;
+		}
+		&.boardDisabled {
+			pointer-events: none;
+			filter: brightness(0.8);
 		}
 	}
 

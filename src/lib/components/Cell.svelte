@@ -5,6 +5,7 @@
 	export let i;
 	export let j;
 	export let handleCellClick;
+	export let itsOnline = false;
 	export let value;
 	export let turn;
 	export let isWinningStone = false;
@@ -39,7 +40,11 @@
 			? 'right'
 			: ''}"
 	on:click={() => {
-		handleCellClick(i, j);
+		if (itsOnline) {
+			handleCellClick(i, j, true);
+		} else {
+			handleCellClick(i, j);
+		}
 	}}
 	bind:this={cellElement}
 >

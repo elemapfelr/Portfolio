@@ -1,5 +1,10 @@
 const WebSocket = require('ws');
-const { makeNewGameSession } = require('./gameSessionController');
+const {
+	makeNewGameSession,
+	gameControl,
+	gameSessionTerminate,
+	wasGaming
+} = require('./gameSessionController');
 
 function setupWebSocket(PORT) {
 	const wss = new WebSocket.Server({ port: PORT });
@@ -23,64 +28,81 @@ function setupWebSocket(PORT) {
 				case 'GAMEREQUEST':
 					let reqData = parsedMessage.data;
 					const targetClient = Array.from(clients).find(
-						(client) => client.user.id === reqData.targetId && client.user.unique === reqData.targetUnique
+						(client) =>
+							client.user.id === reqData.targetId && client.user.unique === reqData.targetUnique
 					);
 					if (targetClient) {
 						let msg = {
 							type: 'NEWREQUEST',
 							data: { requesterId: reqData.id, requesterUnique: reqData.unique }
-						}
+						};
 						targetClient.send(JSON.stringify(msg));
 					}
 					break;
 				case 'GAMEREQUEST_CANCEL':
 					let reqCancelData = parsedMessage.data;
 					const targetClient2 = Array.from(clients).find(
-						(client) => client.user.id === reqCancelData.targetId && client.user.unique === reqCancelData.targetUnique
+						(client) =>
+							client.user.id === reqCancelData.targetId &&
+							client.user.unique === reqCancelData.targetUnique
 					);
 					if (targetClient2) {
 						let msg = {
 							type: 'REQUEST_CANCELED',
 							data: { requesterId: reqCancelData.id, requesterUnique: reqCancelData.unique }
-						}
+						};
 						targetClient2.send(JSON.stringify(msg));
 					}
 					break;
 				case 'GAMEREQUEST_REJECT':
 					let reqRejectData = parsedMessage.data;
 					const targetClient3 = Array.from(clients).find(
-						(client) => client.user.id === reqRejectData.targetId && client.user.unique === reqRejectData.targetUnique
+						(client) =>
+							client.user.id === reqRejectData.targetId &&
+							client.user.unique === reqRejectData.targetUnique
 					);
 					if (targetClient3) {
 						let msg = {
 							type: 'REQUEST_REJECTED',
 							data: { rejecterId: reqRejectData.id, rejecterUnique: reqRejectData.unique }
-						}
+						};
 						targetClient3.send(JSON.stringify(msg));
 					}
 					break;
 				case 'GAMEREQUEST_ACCEPT':
 					let reqAcceptData = parsedMessage.data;
 					const acceptingClient = Array.from(clients).find(
-						(client) => client.user.id === reqAcceptData.id && client.user.unique === reqAcceptData.unique
+						(client) =>
+							client.user.id === reqAcceptData.id && client.user.unique === reqAcceptData.unique
 					);
 					const targetClient4 = Array.from(clients).find(
-						(client) => client.user.id === reqAcceptData.targetId && client.user.unique === reqAcceptData.targetUnique
+						(client) =>
+							client.user.id === reqAcceptData.targetId &&
+							client.user.unique === reqAcceptData.targetUnique
 					);
 					if (targetClient4) {
 						let msg = {
 							type: 'REQUEST_ACCEPTED',
 							data: { accepterId: reqAcceptData.id, accepterUnique: reqAcceptData.unique }
-						}
+						};
 						targetClient4.send(JSON.stringify(msg));
 
 						makeNewGameSession(targetClient4, acceptingClient); //게임 요청한 사람이 흑
 					}
 					break;
+				case 'MAKE_MOVE':
+					let gameData = parsedMessage.data;
+					gameControl(gameData);
+					break;
+				case 'LEAVE_GAME':
+					let leaveData = parsedMessage.data;
+					gameSessionTerminate(leaveData);
+					break;
 			}
 		});
 
 		ws.on('close', () => {
+			wasGaming(ws);
 			clients.delete(ws);
 			broadcastOnlineUsers();
 		});
@@ -89,12 +111,14 @@ function setupWebSocket(PORT) {
 	function broadcastOnlineUsers() {
 		let msg = {
 			type: 'ONLINE_USERS'
-		}
-		const userIds = Array.from(clients).map(
-			(client) => {
-				return {id: client.user.id, unique: client.user.unique}
-			}
-		);
+		};
+		const userIds = Array.from(clients).map((client) => {
+			return {
+				id: client.user.id,
+				unique: client.user.unique,
+				inSession: client.sessionId ? true : false
+			};
+		});
 		msg.data = userIds;
 		clients.forEach((client) => {
 			if (client.readyState === WebSocket.OPEN) {
