@@ -297,12 +297,12 @@ function fourORjang1(board, x, y, currentPlayer, otherPlayer, trigger) {
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
 		} else if (board[yy][xx] === null) {
-			if (!check) {
-				check = true;
-			} else {
-				blink1++;
-				break;
-			}
+			// if (!check) {
+			check = true;
+			// } else {
+			blink1++;
+			break;
+			// }
 		}
 		xx--;
 	}
@@ -318,12 +318,12 @@ function fourORjang1(board, x, y, currentPlayer, otherPlayer, trigger) {
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
 		} else if (board[yy][xx] === null) {
-			if (!check) {
-				check = true;
-			} else {
-				blink2++;
-				break;
-			}
+			// if (!check) {
+			check = true;
+			// } else {
+			blink2++;
+			break;
+			// }
 		}
 		xx++;
 	}
@@ -337,6 +337,9 @@ function fourORjang1(board, x, y, currentPlayer, otherPlayer, trigger) {
 
 	// 장목찾는 트리거
 	if (trigger === 2) {
+		console.log(allStone);
+		console.log(stone1);
+		console.log(stone2);
 		return allStone >= 5 && stone1 !== 0 && stone2 !== 0 ? 1 : 0;
 	}
 
@@ -364,12 +367,12 @@ function fourORjang2(board, x, y, currentPlayer, otherPlayer, trigger) {
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
 		} else if (board[yy][xx] === null) {
-			if (!check) {
-				check = true;
-			} else {
-				blink1++;
-				break;
-			}
+			// if (!check) {
+			check = true;
+			// } else {
+			blink1++;
+			break;
+			// }
 		}
 		xx--;
 		yy--;
@@ -387,12 +390,12 @@ function fourORjang2(board, x, y, currentPlayer, otherPlayer, trigger) {
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
 		} else if (board[yy][xx] === null) {
-			if (!check) {
-				check = true;
-			} else {
-				blink2++;
-				break;
-			}
+			// if (!check) {
+			check = true;
+			// } else {
+			blink2++;
+			break;
+			// }
 		}
 		xx++;
 		yy++;
@@ -434,12 +437,12 @@ function fourORjang3(board, x, y, currentPlayer, otherPlayer, trigger) {
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
 		} else if (board[yy][xx] === null) {
-			if (!check) {
-				check = true;
-			} else {
-				blink1++;
-				break;
-			}
+			// if (!check) {
+			check = true;
+			// } else {
+			blink1++;
+			break;
+			// }
 		}
 		yy--;
 	}
@@ -455,12 +458,12 @@ function fourORjang3(board, x, y, currentPlayer, otherPlayer, trigger) {
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
 		} else if (board[yy][xx] === null) {
-			if (!check) {
-				check = true;
-			} else {
-				blink2++;
-				break;
-			}
+			// if (!check) {
+			check = true;
+			// } else {
+			blink2++;
+			break;
+			// }
 		}
 		yy++;
 	}
@@ -501,12 +504,12 @@ function fourORjang4(board, x, y, currentPlayer, otherPlayer, trigger) {
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
 		} else if (board[yy][xx] === null) {
-			if (!check) {
-				check = true;
-			} else {
-				blink1++;
-				break;
-			}
+			// if (!check) {
+			check = true;
+			// } else {
+			blink1++;
+			break;
+			// }
 		}
 		xx++;
 		yy--;
@@ -524,12 +527,12 @@ function fourORjang4(board, x, y, currentPlayer, otherPlayer, trigger) {
 		} else if (board[yy][xx] === otherPlayer) {
 			break;
 		} else if (board[yy][xx] === null) {
-			if (!check) {
-				check = true;
-			} else {
-				blink2++;
-				break;
-			}
+			// if (!check) {
+			check = true;
+			// } else {
+			blink2++;
+			break;
+			// }
 		}
 		xx--;
 		yy++;
