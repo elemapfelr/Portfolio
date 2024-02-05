@@ -1,9 +1,17 @@
 <script>
 	import { fade } from 'svelte/transition';
+	import { createEventDispatcher } from 'svelte';
 
 	export let leftSessionAlert = false;
 	export let leaveGame = () => {};
 	export let terminated = null;
+
+	const dispatch = createEventDispatcher();
+
+	function terminateConfirm() {
+		terminated = null;
+		dispatch('terminatedChange', terminated); // 이벤트 발생
+	}
 </script>
 
 {#if leftSessionAlert}
@@ -27,12 +35,7 @@
 			<h5>Leave Game</h5>
 			<p>{terminated.id} left game.</p>
 			<div class="btns">
-				<button
-					class="w-btn-neon1"
-					on:click={() => {
-						terminated = null;
-					}}>Leave</button
-				>
+				<button class="w-btn-neon1" on:click={terminateConfirm}>Leave</button>
 			</div>
 		</div>
 	</div>

@@ -2,6 +2,7 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import { checkId, checkTs } from '$lib/js/cookie.js';
+	import { createEventDispatcher } from 'svelte';
 
 	export let onlineUsersExceptMe = [];
 	export let showOnlineModal = false;
@@ -18,8 +19,11 @@
 		selectedItem = user;
 	}
 
+	const dispatch = createEventDispatcher();
+
 	function sendRequest() {
 		requesting = true;
+		dispatch('requestingChange', requesting); // 이벤트 발생
 		const msg = {
 			type: 'GAMEREQUEST',
 			data: {
@@ -48,6 +52,7 @@
 
 	function closeCancelAlert() {
 		gameReq = null;
+		dispatch('gameReqChange', gameReq); // 이벤트 발생
 	}
 
 	function rejectReq() {
@@ -62,11 +67,13 @@
 		};
 		socket.send(JSON.stringify(msg));
 		gameReq = null;
+		dispatch('gameReqChange', gameReq); // 이벤트 발생
 	}
 
 	function closeRejectAlert() {
-		requesting = null;
+		requesting = false;
 		resOfRequest = null;
+		dispatch('resOfRequestChange', resOfRequest); // 이벤트 발생
 	}
 
 	function acceptReq() {
@@ -81,6 +88,7 @@
 		};
 		socket.send(JSON.stringify(msg));
 		gameMatched = true;
+		dispatch('gameMatchedChange', gameMatched); // 이벤트 발생
 	}
 </script>
 

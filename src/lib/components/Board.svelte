@@ -18,26 +18,26 @@
 	$: player1UserName = 'Player 1';
 	$: player2UserName = 'Player 2';
 	$: turn = 'black';
-	$: showModal = false;
-	$: showFBModal = false;
-	$: showOnlineModal = false;
-	$: showSetIdModal = false;
+	let showModal = false;
+	let showFBModal = false;
+	let showOnlineModal = false;
+	let showSetIdModal = false;
 	$: checkFB = '';
 	$: winner = '';
 	$: winningStones = [];
-	$: end = false;
+	let end = false;
 	$: onlineUsers = [];
 	$: onlineUsersExceptMe = [];
 	$: idCookie = '';
 	$: gameReq = null;
 	$: resOfRequest = null;
-	$: requesting = false;
-	$: gameMatched = false;
+	let requesting = false;
+	let gameMatched = false;
 	$: currentSession = null;
 	$: currentUser = null;
-	$: itsOnline = false;
+	let itsOnline = false;
 	$: boardDisabled = '';
-	$: leftSessionAlert = false;
+	let leftSessionAlert = false;
 	$: terminated = null;
 
 	let socket;
@@ -154,10 +154,10 @@
 		}
 		currentSession = null;
 		currentUser = null;
-		gameReq = null;
-		resOfRequest = null;
-		requesting = null;
-		gameMatched = false;
+		// gameReq = null;
+		// resOfRequest = null;
+		// requesting = false;
+		// gameMatched = false;
 		showOnlineModal = true;
 	}
 
@@ -215,9 +215,10 @@
 						gameStartData.player1.id === checkId() && gameStartData.player1.unique === checkTs()
 							? gameStartData.player1
 							: gameStartData.player2;
-					// 게임 UI 초기화 및 게임 준비
-					initializeGameUI(gameStartData);
-					requesting = null;
+					setTimeout(() => {
+						// 게임 UI 초기화 및 게임 준비
+						initializeGameUI(gameStartData);
+					}, 1000);
 					break;
 				case 'OPPONENT_MOVE':
 					let opponentMoveData = recieved.data;
@@ -259,6 +260,10 @@
 		}
 		showOnlineModal = false;
 		itsOnline = true;
+		requesting = false;
+		gameMatched = false;
+		resOfRequest = null;
+		gameReq = null;
 	}
 
 	function handleOpponentMove(moveData) {
@@ -332,16 +337,25 @@
 <FbModal message={checkFB} {showFBModal} onClose={closeFBmodal} />
 <SetIdModal show={showSetIdModal} {idCookie} onSave={setIdAndConnect} close={clostSetIdModal} />
 <OnlineModal
+	on:gameMatchedChange={(e) => (gameMatched = e.detail)}
 	{gameMatched}
+	on:requestingChange={(e) => (requesting = e.detail)}
 	{requesting}
+	on:resOfRequestChange={(e) => (resOfRequest = e.detail)}
 	{resOfRequest}
+	on:gameReqChange={(e) => (gameReq = e.detail)}
 	{gameReq}
 	{onlineUsersExceptMe}
 	{showOnlineModal}
 	onClose={closeOnlinemodal}
 	{socket}
 />
-<LeftSessionModal {leftSessionAlert} {leaveGame} {terminated} />
+<LeftSessionModal
+	{leftSessionAlert}
+	{leaveGame}
+	{terminated}
+	on:terminatedChange={(e) => (terminated = e.detail)}
+/>
 
 <style lang="scss">
 	.flexArea {
