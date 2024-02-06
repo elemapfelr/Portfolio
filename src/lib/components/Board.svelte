@@ -126,7 +126,7 @@
 				data: {
 					id: checkId(),
 					unique: checkTs(),
-					session: currentSession
+					sessionId: currentSession
 				}
 			};
 			socket.send(JSON.stringify(msg));
