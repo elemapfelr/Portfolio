@@ -118,6 +118,8 @@
 	function playAgain() {
 		if (itsOnline) {
 			// 온라인의 경우
+			showModal = false;
+			showOnlineModal = true;
 			requesting = true;
 			const msg = {
 				type: 'GAMEREQUEST_AGAIN',
