@@ -115,6 +115,24 @@
 		winningStones = [];
 	}
 
+	function playAgain() {
+		if (itsOnline) {
+			// 온라인의 경우
+			requesting = true;
+			const msg = {
+				type: 'GAMEREQUEST_AGAIN',
+				data: {
+					id: checkId(),
+					unique: checkTs(),
+					session: currentSession
+				}
+			};
+			socket.send(JSON.stringify(msg));
+		} else {
+			resetGame();
+		}
+	}
+
 	const winEmojis = ['😎', '🤪', '😄', '😋', '🫡', '🥱', '😝', '🤭', '🤓', '💩'];
 	const loseEmojis = ['😭', '😢', '😥', '😒', '🙁', '😔', '😟', '😧', '😱', '💀'];
 
@@ -296,7 +314,7 @@
 		<p class="userName">{player1UserName}</p>
 	</div>
 	{#if end}
-		<button class="w-btn-neon2" transition:fade on:click={resetGame}> Play Again! </button>
+		<button class="w-btn-neon2" transition:fade on:click={playAgain}> Play Again! </button>
 	{/if}
 	<div class="user whiteUser {turn === 'white' ? ' active' : ''}">
 		{#if winner == player2UserName}
@@ -333,7 +351,7 @@
 </div>
 
 <button class="online" on:click={onlineClick}>Online Play</button>
-<Modal message={`${winner} wins!`} {showModal} onClose={closeModal} playAgain={resetGame} />
+<Modal message={`${winner} wins!`} {showModal} onClose={closeModal} {playAgain} />
 <FbModal message={checkFB} {showFBModal} onClose={closeFBmodal} />
 <SetIdModal show={showSetIdModal} {idCookie} onSave={setIdAndConnect} close={clostSetIdModal} />
 <OnlineModal

@@ -3,7 +3,8 @@ const {
 	makeNewGameSession,
 	gameControl,
 	gameSessionTerminate,
-	wasGaming
+	wasGaming,
+	gameReqAgain
 } = require('./gameSessionController');
 
 function setupWebSocket(PORT) {
@@ -97,6 +98,10 @@ function setupWebSocket(PORT) {
 				case 'LEAVE_GAME':
 					let leaveData = parsedMessage.data;
 					gameSessionTerminate(leaveData);
+					break;
+				case 'GAMEREQUEST_AGAIN':
+					let reqAgainData = parsedMessage.data;
+					gameReqAgain(reqAgainData);
 					break;
 			}
 		});

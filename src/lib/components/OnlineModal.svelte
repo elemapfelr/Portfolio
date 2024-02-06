@@ -150,6 +150,15 @@
 					</p>
 					<span>Preparing...</span>
 				</div>
+			{:else if gameReq.reMatch}
+				<div class="gameReqModal" on:click|stopPropagation>
+					<h5>Match Again!</h5>
+					<p>{gameReq.requesterId} Challenged you again!</p>
+					<div class="btns">
+						<button class="w-btn-neon2" on:click={acceptReq}>Accept</button>
+						<button class="w-btn-neon1" on:click={rejectReq}>Reject</button>
+					</div>
+				</div>
 			{:else}
 				<div class="gameReqModal" on:click|stopPropagation>
 					<h5>New Request!</h5>

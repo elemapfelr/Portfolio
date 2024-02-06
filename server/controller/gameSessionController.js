@@ -109,4 +109,28 @@ function wasGaming(ws) {
 	}
 }
 
-module.exports = { makeNewGameSession, gameControl, gameSessionTerminate, wasGaming };
+// 재대결 신청
+function gameReqAgain(reqAgainData) {
+	let correctSession = false;
+	const sessionId = reqAgainData.sessionId;
+	let { player1, player2 } = gameSessions[sessionId];
+	let opponent;
+	// 게임 세션 일치하는지 확인
+	if (reqAgainData.id === player1.user.id && reqAgainData.unique === player1.user.unique) {
+		correctSession = true;
+		opponent = player2;
+	}
+	if (reqAgainData.id === player2.user.id && reqAgainData.unique === player2.user.unique) {
+		correctSession = true;
+		opponent = player1;
+	}
+	if (correctSession) {
+		let msg = {
+			type: 'NEWREQUEST',
+			data: { requesterId: reqAgainData.id, requesterUnique: reqAgainData.unique }
+		};
+		opponent.send(JSON.stringify(msg));
+	}
+}
+
+module.exports = { makeNewGameSession, gameControl, gameSessionTerminate, wasGaming, gameReqAgain };
