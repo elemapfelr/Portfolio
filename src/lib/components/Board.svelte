@@ -214,6 +214,8 @@
 					);
 					break;
 				case 'NEWREQUEST':
+					if (showModal) showModal = false;
+					if (!showOnlineModal) showOnlineModal = true;
 					gameReq = recieved.data;
 					break;
 				case 'REQUEST_CANCELED':
