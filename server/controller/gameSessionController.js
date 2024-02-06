@@ -127,7 +127,7 @@ function gameReqAgain(reqAgainData) {
 	if (correctSession) {
 		let msg = {
 			type: 'NEWREQUEST',
-			data: { requesterId: reqAgainData.id, requesterUnique: reqAgainData.unique }
+			data: { requesterId: reqAgainData.id, requesterUnique: reqAgainData.unique, reMatch: true }
 		};
 		opponent.send(JSON.stringify(msg));
 	}
