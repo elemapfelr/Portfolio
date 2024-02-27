@@ -15,6 +15,11 @@
 		.fill()
 		.map(() => Array(boardSize).fill(null));
 
+	//임시
+	let forbiddenPlace = Array(boardSize)
+		.fill()
+		.map(() => Array(boardSize).fill(null));
+
 	$: player1UserName = 'Player 1';
 	$: player2UserName = 'Player 2';
 	$: turn = 'black';
@@ -69,6 +74,22 @@
 			checkForWin(cells, boardSize, turn, row, col, setWinningStonesAndWinner);
 			if (!winner) {
 				turn = turn == 'black' ? 'white' : 'black';
+
+				//임시
+				if (turn == 'black') {
+					// 금수 자리 초기화
+					forbiddenPlace = Array(boardSize)
+						.fill()
+						.map(() => Array(boardSize).fill(null));
+					for (let i = 0; i < cells.length; i++) {
+						for (let j = 0; j < cells[i].length; j++) {
+							let tempCheckFB = checkForbiddenMoves(cells, i, j, turn);
+							if (tempCheckFB) {
+								forbiddenPlace[i][j] = true;
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -349,6 +370,7 @@
 				{turn}
 				value={_}
 				isWinningStone={winningStones.some((stone) => stone.r === i && stone.c === j)}
+				isForbidden={forbiddenPlace[i][j]}
 			/>
 		{/each}
 	{/each}

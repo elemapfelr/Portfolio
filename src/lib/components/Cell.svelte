@@ -9,6 +9,7 @@
 	export let value;
 	export let turn;
 	export let isWinningStone = false;
+	export let isForbidden;
 
 	let cellElement;
 
@@ -50,6 +51,8 @@
 >
 	{#if value === 'black' || value === 'white'}
 		<span in:scale={{ start: 2 }} out:fade class="{value} {isWinningStone ? 'winning' : ''}"></span>
+	{:else if turn === 'black' && isForbidden}
+		<span class="forbiddenPlace"></span>
 	{:else}
 		<!-- 마우스를 올렸을 때 보여줄 반투명한 원 -->
 		<span class="preview {turn}"></span>
@@ -131,6 +134,22 @@
 
 		span.winning {
 			outline: 2px solid #00ffcca9; // 승리한 돌에 빨간색 테두리를 적용합니다.
+		}
+
+		span.forbiddenPlace {
+			&::after {
+				content: '\f00d';
+				display: block;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				font-size: 30px;
+				font-family: 'Font Awesome 5 Free';
+				font-weight: 700;
+				opacity: 0.7;
+				color: #e2551e;
+			}
 		}
 
 		span {
