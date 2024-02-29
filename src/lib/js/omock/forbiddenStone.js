@@ -337,9 +337,6 @@ function fourORjang1(board, x, y, currentPlayer, otherPlayer, trigger) {
 
 	// 장목찾는 트리거
 	if (trigger === 2) {
-		console.log(allStone);
-		console.log(stone1);
-		console.log(stone2);
 		return allStone >= 5 && stone1 !== 0 && stone2 !== 0 ? 1 : 0;
 	}
 

@@ -1,14 +1,14 @@
 <script>
-	import Cell from '$lib/components/Cell.svelte';
-	import Modal from '$lib/components/Modal.svelte';
-	import FbModal from '$lib/components/FbModal.svelte';
-	import { checkForWin, checkForbiddenMoves } from '$lib/js/gameLogic.js';
+	import Cell from '$lib/components/omock/Cell.svelte';
+	import Modal from '$lib/components/omock/Modal.svelte';
+	import FbModal from '$lib/components/omock/FbModal.svelte';
+	import { checkForWin, checkForbiddenMoves } from '$lib/js/omock/gameLogic.js';
 	import { fade } from 'svelte/transition';
-	import OnlineModal from '$lib/components/OnlineModal.svelte';
-	import SetIdModal from '$lib/components/SetIdModal.svelte';
-	import LeftSessionModal from '$lib/components/LeftSessionModal.svelte';
-	import { setId, checkId, checkTs } from '$lib/js/cookie.js';
-	import timestamp from '$lib/js/timestamp.js';
+	import OnlineModal from '$lib/components/omock/OnlineModal.svelte';
+	import SetIdModal from '$lib/components/omock/SetIdModal.svelte';
+	import LeftSessionModal from '$lib/components/omock/LeftSessionModal.svelte';
+	import { setId, checkId, checkTs } from '$lib/js/omock/cookie.js';
+	import timestamp from '$lib/js/omock/timestamp.js';
 
 	let boardSize = 16;
 	let cells = Array(boardSize)
@@ -476,7 +476,7 @@
 		display: grid;
 		grid-template-columns: repeat(16, 1fr);
 		position: relative;
-		background-image: url(./../img/wood_texture.jpg);
+		background-image: url(./../../img/wood_texture.jpg);
 		background-position: center;
 		background-repeat: no-repeat;
 		background-size: cover;

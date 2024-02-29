@@ -1,11 +1,25 @@
 <script>
-	import Header from '$lib/components/Header.svelte';
 	import '$lib/scss/style.scss';
-	// export const prerender = true;
 </script>
 
-<Header />
-
 <main>
-	<slot />
+	<nav>
+		<h1>Hello World.</h1>
+		<h2>My name is John.</h2>
+	</nav>
+	<div class="slotArea">
+		<slot />
+	</div>
 </main>
+
+<style lang="scss">
+	nav {
+		background-color: #202020;
+		color: #fff;
+		padding-right: 10px;
+	}
+	.slotArea {
+		flex: 1;
+		height: 100vh;
+	}
+</style>

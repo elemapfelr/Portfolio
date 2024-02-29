@@ -1,7 +1,7 @@
 <!-- Modal.svelte -->
 <script>
 	import { fade } from 'svelte/transition';
-	import { checkId, checkTs } from '$lib/js/cookie.js';
+	import { checkId, checkTs } from '$lib/js/omock/cookie.js';
 	import { createEventDispatcher } from 'svelte';
 
 	export let onlineUsersExceptMe = [];
