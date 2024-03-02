@@ -1,6 +1,5 @@
 <script>
 	import Grid from '$lib/components/intro/Grid.svelte';
-	import { fade } from 'svelte/transition';
 
 	let grids = [
 		{
@@ -54,11 +53,6 @@
 	];
 </script>
 
-<!-- <div class="flex"> -->
-<!-- <div class="title">
-		<h1>Hello World.</h1>
-		<h2>My name is John.</h2>
-	</div> -->
 <div class="gridArea">
 	{#each grids as item}
 		<Grid col={item.col} row={item.row} content={item.content} link={item.link}></Grid>
