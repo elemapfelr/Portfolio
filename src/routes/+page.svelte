@@ -1,4 +1,5 @@
 <script>
+	import { fade } from 'svelte/transition';
 	import Grid from '$lib/components/intro/Grid.svelte';
 	import gomoku from '$lib/img/gomoku.svg';
 
@@ -70,7 +71,7 @@
 	];
 </script>
 
-<div class="gridArea">
+<div class="gridArea" out:fade>
 	{#each grids as item}
 		<Grid
 			col={item.col}
@@ -89,14 +90,18 @@
 
 <style lang="scss">
 	.gridArea {
-		flex: 1;
-		// width: 100%;
+		height: 100%;
 		display: grid;
 		padding: 10px;
 		box-sizing: border-box;
 		grid-template-columns: repeat(4, 1fr);
-		grid-template-rows: repeat(4, calc(25vh - 12.5px));
+		grid-template-rows: repeat(4, calc(25% - 7.5px));
 		gap: 10px;
 		background-image: linear-gradient(135deg, #81ffef 10%, #f067b4 100%);
+	}
+	@media screen and (max-width: 1280px){
+		.gridArea{
+			padding-top: 50px;
+		}
 	}
 </style>

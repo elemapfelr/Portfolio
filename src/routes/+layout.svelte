@@ -1,12 +1,13 @@
 <script>
-	import { fade } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
+	import { cubicIn, cubicOut } from 'svelte/easing';
 	import '$lib/scss/style.scss';
 	import { page } from '$app/stores';
 	import svelteLogo from '$lib/img/svelte_logo.svg';
+	export let data;
 </script>
-
 <main>
-	<nav>
+	<nav out:fade={{duration:300}}>
 		<div class="top">
 			<h1>I'm Junhyeok Choi</h1>
 			<h2>Front-end Developer</h2>
@@ -35,9 +36,29 @@
 			</div>
 		</div>
 	</nav>
-	<div class="slotArea">
+	<header>
+		{#if $page.url.pathname !== '/'}
+			<a href="/" transition:fade>Go Index</a>
+		{/if}
+		<h1>Hi I'm Junhyeok Choi</h1>
+		<h2>Front-end Developer</h2>
+		<div class="skills">
+			<span><i class="fa-brands fa-js"></i></span>
+			<span><i class="fa-brands fa-node"></i></span>
+			<span><i class="fa-brands fa-sass"></i></span>
+			<span><img src={svelteLogo} alt="svelte logo" /></span>
+			<span><i class="fa-brands fa-php"></i></span>
+			<span><i class="fa-brands fa-docker"></i></span>
+			<span><i class="fa-brands fa-github"></i></span>
+			<span><i class="fa-brands fa-gitlab"></i></span>
+		</div>
+	</header>
+	{#key data.pathname}
+	<div class="slotArea" in:fly={{ easing: cubicOut, y: 10, duration: 300, delay: 400 }}
+	out:fly={{ easing: cubicIn, y: -10, duration: 300 }}>
 		<slot />
 	</div>
+	{/key}
 </main>
 
 <style lang="scss">
@@ -46,16 +67,18 @@
 			@content;
 		}
 	}
-
 	nav {
 		background-color: #202020;
 		color: #fff;
 		padding: 50px 25px;
-		width: calc(500px / 1920px);
-		max-width: 500px;
+		box-sizing: border-box;
+		width: 550px;
+		height: 100vh;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+		float: left;
+		transition: all .3s;
 
 		.top {
 			h2 {
@@ -64,14 +87,17 @@
 				font-weight: bold;
 				font-size: 35px;
 				letter-spacing: -1.5px;
+				transition: all .2s;
 			}
 			h1 {
 				font-size: 50px;
 				letter-spacing: -2px;
+				transition: all .2s;
 			}
 
 			p {
-				letter-spacing: -0.4px;
+				letter-spacing: -0.6px;
+				transition: all .2s;
 			}
 		}
 
@@ -116,8 +142,102 @@
 			}
 		}
 	}
+	header{
+		width: 100%;
+		background-color: #20202055;
+		height: 40px;
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: none;
+		align-items: center;
+		justify-content: center;
+		column-gap: 30px;
+		a{
+			padding: 5px 30px 4px;
+			text-decoration: none;
+			background: #ffffff55;
+			color: #202020;
+			transition: all .2s;
+			font-size: .8rem;
+			&:hover {
+				background: #ffffffaa;
+			}
+		}
+		h1,h2{
+			color: #fff;
+			font-size: 1rem;
+		}
+		h2{
+			font-size: .8rem;
+		}
+		.skills {
+			display: flex;
+			align-items: center;
+			column-gap: 10px;
+			i {
+				color: #fff;
+				font-size: 16px;
+			}
+			img {
+				width: 16px;
+			}
+		}
+	}
 	.slotArea {
-		flex: 1;
 		height: 100vh;
+		overflow: hidden;
+		transition: all .3s;
+	}
+
+	@media screen and (max-width: 1650px){
+		nav{
+			width: 450px;
+			.top {
+				h2 {
+					font-size: 25px;
+					letter-spacing: -1.3px;
+				}
+				h1 {
+					font-size: 35px;
+					letter-spacing: -1.8px;
+				}
+
+				p {
+					font-size: .9rem;
+					letter-spacing: -0.5px;
+				}
+			}
+		}
+	}
+	@media screen and (max-width: 1400px){
+		nav{
+			width: 350px;
+			.top {
+				h2 {
+					font-size: 20px;
+					letter-spacing: -1.2px;
+				}
+				h1 {
+					font-size: 30px;
+					letter-spacing: -1.7px;
+				}
+
+				p {
+					font-size: .8rem;
+					letter-spacing: -0.4px;
+				}
+			}
+		}
+	}
+	@media screen and (max-width: 1280px){
+		nav{
+			width: 0px;
+			position: absolute;
+			left: -300px;
+		}
+		header{
+			display: flex;
+		}
 	}
 </style>

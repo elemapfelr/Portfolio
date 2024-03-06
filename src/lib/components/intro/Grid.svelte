@@ -108,7 +108,6 @@
 				top: 50%;
 				left: 50%;
 				transform: translate(-50%, -50%);
-				overflow: hidden;
 				h5 {
 					text-align: left;
 					font-size: 1.5rem;
@@ -116,6 +115,7 @@
 				}
 				p {
 					text-align: left;
+					letter-spacing: -1px;
 				}
 				button {
 					float: right;
