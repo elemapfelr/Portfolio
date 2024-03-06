@@ -1,6 +1,5 @@
 <script>
 	import Grid from '$lib/components/intro/Grid.svelte';
-	import { fade } from 'svelte/transition';
 	import gomoku from '$lib/img/gomoku.svg';
 
 	let grids = [
