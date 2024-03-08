@@ -23,7 +23,8 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-<div class="grid" style="grid-column: {col}; grid-row: {row}" on:click={gridClick}>
+<!-- <div class="grid" style="grid-column: {col}; grid-row: {row}" on:click={gridClick}> -->
+<div class="grid" on:click={gridClick}>
 	<div class="contents">
 		{#if clicked}
 			<div

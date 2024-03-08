@@ -94,13 +94,27 @@
 		display: grid;
 		padding: 10px;
 		box-sizing: border-box;
-		grid-template-columns: repeat(4, 1fr);
-		grid-template-rows: repeat(4, calc(25% - 7.5px));
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		grid-auto-rows: 250px;
+		// grid-template-columns: repeat(4, 1fr);
+		// grid-template-rows: repeat(4, calc(25% - 7.5px));
 		gap: 10px;
 		background-image: linear-gradient(135deg, #81ffef 10%, #f067b4 100%);
+		overflow-y: scroll;
+		&::-webkit-scrollbar {
+			width: 4px;
+			height: 4px;
+		}
+		&::-webkit-scrollbar-track {
+			background: transparent;
+		}
+		&::-webkit-scrollbar-thumb {
+			background-color: #fff7;
+			border-radius: 2px;
+		}
 	}
-	@media screen and (max-width: 1280px){
-		.gridArea{
+	@media screen and (max-width: 1280px) {
+		.gridArea {
 			padding-top: 50px;
 		}
 	}
