@@ -1,12 +1,13 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { fly, fade } from 'svelte/transition';
+	import svelteLogo from '$lib/img/svelte_logo.svg';
 
-	export let col;
-	export let row;
 	export let title;
 	export let contents;
 	export let link;
+	export let externalLink;
+	export let skills;
 	export let titleImgSrc;
 
 	let clicked = false;
@@ -16,14 +17,17 @@
 	}
 
 	function goLink() {
-		goto(link);
+		if (externalLink) {
+			window.open(externalLink, '_blank');
+		} else {
+			goto(link);
+		}
 	}
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-<!-- <div class="grid" style="grid-column: {col}; grid-row: {row}" on:click={gridClick}> -->
 <div class="grid" on:click={gridClick}>
 	<div class="contents">
 		{#if clicked}
@@ -35,6 +39,21 @@
 				<h5>{title}</h5>
 				<p>{contents}</p>
 				<button on:click={goLink}>Go!</button>
+			</div>
+			<div
+				class="skills"
+				in:fly={{ x: 100, duration: 1000, delay: 300 }}
+				out:fly={{ x: 200, duration: 500 }}
+			>
+				{#if skills.length > 0}
+					{#each skills as item}
+						{#if item == 'svelte'}
+							<span><img src={svelteLogo} alt="svelte logo" /></span>
+						{:else}
+							<span><i class="fa-brands fa-{item}"></i></span>
+						{/if}
+					{/each}
+				{/if}
 			</div>
 		{:else}
 			<div
@@ -66,6 +85,7 @@
 		background-color: transparentize(#fff, 0.3);
 		cursor: default;
 		overflow: hidden;
+		box-shadow: 0px 5px 11px #20202077;
 
 		.contents {
 			width: 100%;
@@ -87,6 +107,9 @@
 					margin: 0 auto;
 					background-color: #fff;
 					transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+					display: flex;
+					align-items: center;
+					justify-content: center;
 
 					img {
 						width: 100%;
@@ -116,7 +139,7 @@
 				}
 				p {
 					text-align: left;
-					letter-spacing: -1px;
+					letter-spacing: -1.4px;
 				}
 				button {
 					float: right;
@@ -147,6 +170,25 @@
 					}
 				}
 			}
+			.skills {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				display: flex;
+				align-items: center;
+				column-gap: 10px;
+				span {
+					i {
+						color: #7e7e7e;
+						font-size: 16px;
+						vertical-align: middle;
+					}
+					img {
+						width: 16px;
+						filter: brightness(0.5);
+					}
+				}
+			}
 		}
 
 		&:hover {
@@ -155,6 +197,47 @@
 					transform: translate(-50%, -50%) scale(1.05);
 					.square {
 						box-shadow: 0 0 20px #7775;
+					}
+				}
+			}
+		}
+	}
+	@media screen and (max-width: 720px) {
+		.grid {
+			border-radius: 20px;
+			padding: 20px;
+
+			.contents {
+				.title {
+					.square {
+						width: 70px;
+						height: 70px;
+						border-radius: 20px;
+					}
+
+					h4 {
+						font-size: 0.8rem;
+					}
+				}
+				.details {
+					h5 {
+						font-size: 1rem;
+					}
+					p {
+						font-size: 0.7rem;
+					}
+					.skills {
+						span {
+							i {
+								font-size: 12px;
+							}
+							img {
+								width: 12px;
+							}
+						}
+					}
+					button {
+						font-size: 0.8rem;
 					}
 				}
 			}

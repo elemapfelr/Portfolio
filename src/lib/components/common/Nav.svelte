@@ -1,5 +1,5 @@
 <script>
-	import { fade } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	import { page } from '$app/stores';
 	import svelteLogo from '$lib/img/svelte_logo.svg';
 
@@ -45,6 +45,20 @@
 	<button class="navTrigger {mNavState ? 'active' : ''}" on:click={mNavClick}>
 		<i></i><i></i><i></i>
 	</button>
+	{#if mNavState}
+		<nav-m transition:fly={{ x: 400, duration: 800 }}>
+			<h1>I'm Junhyeok Choi</h1>
+			<h2>Front-end Developer</h2>
+			<br />
+			<p>
+				Hello, I am a passionate and creative front-end developer. I aim to improve user experience
+				and provide value to users through innovative design. Based on my continuous learning and
+				development experience on the latest web technology, I am striving to provide user-centered
+				solutions. I look forward to creating innovative web applications together through my
+				portfolio.
+			</p>
+		</nav-m>
+	{/if}
 </header>
 
 <style lang="scss">
@@ -60,7 +74,7 @@
 		padding: 50px 25px;
 		box-sizing: border-box;
 		width: 550px;
-		height: 100vh;
+		height: 100dvh;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -131,24 +145,70 @@
 	header {
 		width: 100%;
 		background-color: #202020;
-		height: 40px;
-		position: absolute;
-		top: 0;
-		left: 0;
+		height: 50px;
 		display: none;
-		z-index: 1;
+		position: relative;
 		a {
-			padding: 11px 30px 10px;
+			line-height: 50px;
+			height: 100%;
+			padding: 0 30px;
 			text-decoration: none;
 			background: linear-gradient(135deg, #81ffef 10%, #f067b4 100%);
 			background-size: 200% 200%;
+			background-position: 0% 50%;
 			color: #202020;
 			transition: all 0.2s;
 			font-size: 0.8rem;
 			white-space: nowrap;
 			float: left;
 			&:hover {
-				background: #ffffffaa;
+				animation: gradientMove 15s linear infinite;
+			}
+
+			@include keyframes(gradientMove) {
+				0% {
+					background-position: 0% 50%;
+				}
+				50% {
+					background-position: 100% 50%;
+				}
+				100% {
+					background-position: 0% 50%;
+				}
+			}
+		}
+
+		nav-m {
+			position: absolute;
+			top: 50px;
+			right: 0;
+			width: 100%;
+			height: calc(100dvh - 50px);
+			background-color: #202020;
+			z-index: 1;
+			padding: 20px;
+			box-sizing: border-box;
+
+			h2 {
+				text-shadow: 0px 0px 2px #fff;
+				color: #202020;
+				font-weight: bold;
+				font-size: 25px;
+				letter-spacing: -1.5px;
+				transition: all 0.2s;
+			}
+			h1 {
+				color: #fcfcfc;
+				font-size: 35px;
+				letter-spacing: -2px;
+				transition: all 0.2s;
+			}
+
+			p {
+				color: #fcfcfc;
+				font-size: 0.9rem;
+				letter-spacing: -0.6px;
+				transition: all 0.2s;
 			}
 		}
 	}

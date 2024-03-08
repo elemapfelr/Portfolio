@@ -21,8 +21,13 @@
 
 <style lang="scss">
 	.slotArea {
-		height: 100vh;
+		height: 100dvh;
 		overflow: hidden;
 		transition: all 0.3s;
+	}
+	@media screen and (max-width: 720px) {
+		.slotArea {
+			height: calc(100dvh - 50px);
+		}
 	}
 </style>
