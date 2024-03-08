@@ -139,7 +139,7 @@
 				}
 				p {
 					text-align: left;
-					letter-spacing: -1.4px;
+					letter-spacing: -1px;
 				}
 				button {
 					float: right;
