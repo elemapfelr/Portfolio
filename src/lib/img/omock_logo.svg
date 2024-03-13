@@ -1,0 +1,24 @@
+<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+	<g id="Layer_1">
+		<title>Layer 1</title>
+		<g id="svg_12">
+			<path id="svg_1" d="m0,20c0,-10.86758 9.13242,-20 20,-20l60,0c10.86758,0 20,9.13242 20,20l0,60c0,10.86758 -9.13242,20 -20,20l-60,0c-10.86758,0 -20,-9.13242 -20,-20l0,-60z" opacity="undefined" fill="#f3cf98" />
+			<line fill-opacity="0" id="svg_2" y2="99" x2="32.90909" y1="1" x1="32.54545" stroke="#999999" fill="#cccccc" />
+			<line id="svg_3" y2="99" x2="66" y1="1" x1="66" stroke="#999999" fill="#cccccc" />
+			<line id="svg_4" y2="33" x2="99" y1="33" x1="1" stroke="#999999" fill="#cccccc" />
+			<line id="svg_10" y2="66" x2="99" y1="66" x1="1" stroke="#999999" fill="#cccccc" />
+		</g>
+		<ellipse opacity="0.3" ry="17" rx="17" id="svg_11" cy="34.09091" cx="33.81818" fill="#7f7f7f" />
+		<ellipse stroke="#ffffff" ry="15" rx="15" id="svg_6" cy="33" cx="32.72727" fill="#f5f5f5" />
+		<ellipse opacity="0.5" ry="17" rx="17" id="svg_13" cy="34.09091" cx="67.09091" fill="#7f7f7f" />
+		<ellipse ry="15" rx="15" id="svg_7" cy="33" cx="66" stroke="#000" fill="#000000" />
+		<ellipse opacity="0.5" ry="17" rx="17" id="svg_15" cy="67.36364" cx="33.81818" fill="#7f7f7f" />
+		<ellipse ry="15" rx="15" id="svg_8" cy="66" cx="33" stroke="#000" fill="#000000" />
+		<ellipse opacity="0.3" ry="17" rx="17" id="svg_14" cy="67.36364" cx="67.09091" fill="#7f7f7f" />
+		<ellipse ry="15" rx="15" id="svg_9" cy="66" cx="66" stroke="#ffffff" fill="#f5f5f5" />
+		<ellipse transform="rotate(36 24.9154 26.2713)" stroke-opacity="0" stroke="#000000" ry="5.25421" rx="2.03389" id="svg_18" cy="26.2713" cx="24.91537" fill="#ffffff" />
+		<ellipse transform="rotate(36 59.1525 59.8305)" stroke-opacity="0" stroke="#000000" ry="5.25421" rx="2.03389" id="svg_19" cy="59.83047" cx="59.1525" fill="#ffffff" />
+		<ellipse transform="rotate(36 57.7966 25.9323)" stroke-opacity="0" stroke="#000000" ry="5.25421" rx="2.03389" id="svg_20" cy="25.93232" cx="57.79657" fill="#7f7f7f" />
+		<ellipse transform="rotate(36 24.9154 59.2641)" stroke-opacity="0" stroke="#000000" ry="5.25421" rx="2.03389" id="svg_21" cy="59.26415" cx="24.91537" fill="#7f7f7f" />
+	</g>
+</svg>

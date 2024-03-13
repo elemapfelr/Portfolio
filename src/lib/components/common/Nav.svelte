@@ -1,7 +1,7 @@
 <script>
   import { fade, fly } from "svelte/transition";
   import { page } from "$app/stores";
-  import svelteLogo from "$lib/img/svelte_logo.svg";
+  import svelteLogo from "$lib/img/logos/svelte_logo.png";
 
   let mNavState = false;
   function mNavClick() {
