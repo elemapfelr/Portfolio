@@ -1,12 +1,22 @@
 <script>
-	import { fly } from 'svelte/transition';
-	import { cubicIn, cubicOut } from 'svelte/easing';
-	import '$lib/scss/style.scss';
-	import Nav from '$lib/components/common/Nav.svelte';
+	import { fly } from "svelte/transition";
+	import { cubicIn, cubicOut } from "svelte/easing";
+	import "$lib/scss/style.scss";
+	import Nav from "$lib/components/common/Nav.svelte";
+	import Loading from "$lib/components/common/Loading.svelte";
+	import { onMount } from "svelte";
 	export let data;
+
+	let loading = true;
+	onMount(() => {
+		loading = false;
+	});
 </script>
 
 <main>
+	{#if loading}
+		<Loading {loading} />
+	{/if}
 	<Nav />
 	{#key data.pathname}
 		<div

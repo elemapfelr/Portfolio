@@ -21,7 +21,8 @@
 	];
 
 	let title = "Admin Dashboard";
-	let simpleDesc = "내부 서비스 관리를 위한 대시보드 입니다.";
+	let simpleDesc =
+		"본 프로젝트는 Docker를 활용하여 빌드되는 내부 서비스 관리용 대시보드로, Node.js 웹 서버와 EJS 템플릿 엔진을 기반으로 구축되었습니다.";
 	let galleryType = "multi";
 	let skillStacks = [
 		"docker",
@@ -30,15 +31,38 @@
 		"js",
 		"scss",
 		"npm",
-		"chartjs",
 		"ejs",
 		"ssh",
 		"sftp",
 	];
 	let desc = [
 		{
-			title: "",
-			desc: "Javascript의 내장 API인 Intersection Observer를 이용하여 뷰포트 진입 시 작동하는 스크롤 애니메이션을 구현하였습니다.",
+			title: "Docker",
+			desc: "Docker를 사용하여 애플리케이션의 환경을 격리하고, GitLab CI/CD와 연동하여 코드 변경 사항이 있을 때마다 자동으로 빌드 및 배포를 진행합니다.",
+		},
+		{
+			title: "Node.js 및 EJS",
+			desc: "Node.js 웹 서버를 기반으로 하며, 동적 웹 페이지를 구성하기 위해 EJS 템플릿 엔진을 사용합니다.",
+		},
+		{
+			title: "Log",
+			desc: "프로세스 환경 변수(process env)를 활용한 로깅 기능을 통해, 운영 환경에 따른 상세 로그 관리를 제공합니다.",
+		},
+		{
+			title: "GitLab CI/CD",
+			desc: "Git 저장소에 코드를 푸시할 때마다 자동으로 애플리케이션의 빌드 및 배포가 이루어집니다.",
+		},
+		{
+			title: "Axios",
+			desc: "클라이언트와 서버 간의 API 요청 및 처리를 위해 Axios 라이브러리를 사용, 비동기 HTTP 요청을 효율적으로 관리합니다.",
+		},
+		{
+			title: "파일 업로드 및 전송",
+			desc: "클라이언트에서 파일을 업로드하면, Node.js 서버가 SFTP 프로토콜을 사용하여 파일을 메인 데이터베이스 서버로 안전하게 전송합니다.",
+		},
+		{
+			title: "클라이언트 측 모듈화",
+			desc: "자주 사용되는 컴포넌트들을 함수와 클래스로 모듈화하여, 클라이언트 측에서의 재사용성을 높이고 코드의 유지보수를 용이하게 합니다.",
 		},
 	];
 	let link = null;

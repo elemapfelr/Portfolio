@@ -141,7 +141,7 @@
 			background: transparent;
 		}
 		&::-webkit-scrollbar-thumb {
-			background-color: #fff7;
+			background-color: #ccc7;
 			border-radius: 2px;
 		}
 
@@ -342,19 +342,37 @@
 			}
 		}
 	}
-	@media screen and (max-width: 720px) {
+	@media screen and (max-width: 1200px) {
 		.infoBoard {
 			h2 {
 				font-size: 1.2rem;
+				transition: all 0.2s;
+			}
+			p.simpleDesc {
+				font-size: 0.8rem;
+				letter-spacing: -1.2px;
+				transition: all 0.2s;
 			}
 			.description {
+				margin: 20px 0;
+				transition: all 0.2s;
 				h3 {
+					margin-top: 15px;
 					font-size: 1rem;
+					letter-spacing: -0.8px;
+					transition: all 0.2s;
 				}
 				p {
 					font-size: 0.8rem;
+					letter-spacing: -0.6px;
+					font-weight: 300;
+					transition: all 0.2s;
 				}
 			}
+		}
+	}
+	@media screen and (max-width: 720px) {
+		.infoBoard {
 			button.go {
 				&:hover {
 					padding: 10px 10px;
