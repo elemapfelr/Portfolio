@@ -15,9 +15,9 @@
 
 <main>
 	{#if loading}
-		<Loading {loading} />
+		<Loading />
 	{/if}
-	<Nav />
+	<Nav {loading} />
 	{#key data.pathname}
 		<div
 			class="slotArea"

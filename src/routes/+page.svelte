@@ -1,5 +1,6 @@
 <script>
 	import { fade } from "svelte/transition";
+	import { onMount } from "svelte";
 	import Grid from "$lib/components/intro/Grid.svelte";
 	import omockLogo from "$lib/img/omock_logo.svg";
 	import only1Logo from "$lib/img/only1_logo.svg";
@@ -16,6 +17,11 @@
 	import sassLogo from "$lib/img/logos/sass_logo.png";
 	import sshLogo from "$lib/img/logos/ssh_logo.png";
 	import ejsLogo from "$lib/img/logos/ejs_logo.svg";
+
+	let loading = true;
+	onMount(() => {
+		loading = false;
+	});
 
 	let grids = [
 		{
@@ -129,8 +135,10 @@
 </script>
 
 <div class="gridArea {overflowHidden ? 'no-overflow' : ''}" out:fade>
-	{#each grids as item}
+	{#each grids as item, i}
 		<Grid
+			{i}
+			{loading}
 			bind:overflowHidden
 			clicked={item.clicked}
 			title={item.title}
@@ -156,7 +164,7 @@
 		padding: 10px;
 		box-sizing: border-box;
 		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-		grid-auto-rows: 250px;
+		grid-auto-rows: 220px;
 		gap: 10px;
 		background-image: linear-gradient(135deg, #81ffef 10%, #f067b4 100%);
 		overflow-y: scroll;

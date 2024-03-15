@@ -2,6 +2,8 @@
 	import { goto } from "$app/navigation";
 	import { fly, fade } from "svelte/transition";
 
+	export let i;
+	export let loading;
 	export let title;
 	export let contents;
 	export let link;
@@ -32,12 +34,18 @@
 <!-- svelte-ignore a11y-mouse-events-have-key-events -->
 <div class="grid" on:click={gridClick}>
 	<div class="contents">
-		{#if !clicked}
-			<div
-				class="title"
-				in:fade={{ duration: 200, delay: 500 }}
-				out:fly={{ y: -100, duration: 300 }}
-			>
+		{#if loading}
+			<div class="skeleton_loading" out:fade>
+				<div class="skeleton_square"></div>
+				<div class="skeleton_noneBg">
+					<div class="skeleton_text"></div>
+					{#if skillStacks}
+						<div class="skeleton_skills"></div>
+					{/if}
+				</div>
+			</div>
+		{:else}
+			<div class="title" in:fly={{ y: -50, duration: 500, delay: i * 100 }}>
 				<div class="square">
 					<img src={titleImgSrc} alt="title logo" />
 				</div>
@@ -95,6 +103,33 @@
 	@mixin keyframes($name) {
 		@keyframes #{$name} {
 			@content;
+		}
+	}
+
+	.skeleton_loading {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background: transparent;
+
+		* {
+			background: linear-gradient(
+				120deg,
+				#777777 30%,
+				#acacac 38%,
+				#acacac 40%,
+				#777777 48%
+			);
+			border-radius: 100rem;
+			background-size: 200% 100%;
+			background-position: 100% 0;
+			animation: load 1s infinite;
+		}
+
+		@include keyframes(load) {
+			100% {
+				background-position: -100% 0;
+			}
 		}
 	}
 
@@ -241,11 +276,31 @@
 			height: 100%;
 			position: relative;
 
+			/*스켈레톤 메인 컨테이너*/
+			.skeleton_loading {
+				.skeleton_square {
+					width: 90px;
+					height: 90px;
+					margin-bottom: 10px;
+					border-radius: 30px;
+				}
+
+				.skeleton_noneBg {
+					background: none;
+
+					.skeleton_text {
+						width: 50%;
+						height: 15px;
+						margin-bottom: 20px;
+					}
+					.skeleton_skills {
+						width: 90%;
+						height: 0.8rem;
+					}
+				}
+			}
+
 			.title {
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
 				transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
 
 				.square {
@@ -255,7 +310,7 @@
 					border-radius: 30px;
 					box-sizing: border-box;
 					overflow: hidden;
-					margin: 0 auto;
+					// margin: 0 auto;
 					background-color: #fff;
 					transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
 					display: flex;
@@ -272,12 +327,21 @@
 				h4 {
 					margin-top: 5px;
 					font-size: 1rem;
-					text-align: center;
+					// text-align: center;
 					transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
 				}
 
 				.skillStacks {
-					display: none;
+					margin-top: 10px;
+					display: flex;
+					flex-wrap: wrap;
+					row-gap: 3px;
+					column-gap: 3px;
+					span {
+						font-size: 0.7rem;
+						color: #505050;
+						letter-spacing: -0.7px;
+					}
 				}
 			}
 		}
@@ -285,7 +349,7 @@
 		&:hover {
 			.contents {
 				.title {
-					transform: translate(-50%, -50%) scale(1.05);
+					transform: scale(1.05);
 
 					.square {
 						box-shadow: 0 0 20px #7775;
@@ -348,6 +412,35 @@
 
 			.contents {
 				height: auto;
+
+				/*스켈레톤 메인 컨테이너*/
+				.skeleton_loading {
+					display: flex;
+					column-gap: 30px;
+					.skeleton_square {
+						width: 70px;
+						height: 70px;
+						margin-bottom: 0;
+						border-radius: 20px;
+					}
+					.skeleton_noneBg {
+						width: 100%;
+						display: flex;
+						flex-direction: column;
+						justify-content: space-between;
+
+						.skeleton_text {
+							width: 30%;
+							height: 1rem;
+							margin-bottom: 0;
+						}
+						.skeleton_skills {
+							width: 80%;
+							height: 0.8rem;
+						}
+					}
+				}
+
 				.title {
 					position: initial;
 					transform: none;
