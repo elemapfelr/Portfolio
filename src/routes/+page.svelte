@@ -186,7 +186,7 @@
     gap: 10px;
     background-image: linear-gradient(135deg, #81ffef 10%, #f067b4 100%);
     overflow-y: scroll;
-    position: relative;
+    // position: relative;
 
     &.no-overflow {
       overflow-y: hidden;

@@ -49,10 +49,14 @@
 </main>
 
 <style lang="scss">
+  main {
+    overflow: hidden;
+  }
   .slotArea {
     height: 100dvh;
     overflow: hidden;
     transition: all 0.3s;
+    position: relative;
   }
   @media screen and (max-width: 720px) {
     .slotArea {
