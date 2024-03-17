@@ -1,7 +1,7 @@
 <script>
   import { fade, fly } from "svelte/transition";
   import { page } from "$app/stores";
-  import svelteLogo from "$lib/img/logos/svelte_logo.png";
+  import svelteLogo from "$lib/img/logos/svelte_logo.svg";
   import { onMount } from "svelte";
 
   export let loading = true;
@@ -99,17 +99,32 @@
   </button>
   {#if mNavState}
     <nav-m transition:fly={{ x: 400, duration: 800 }}>
-      <h1>I'm Junhyeok Choi</h1>
-      <h2>Front-end Developer</h2>
-      <br />
-      <p>
-        Hello, I am a passionate and creative front-end developer. I aim to
-        improve user experience and provide value to users through innovative
-        design. Based on my continuous learning and development experience on
-        the latest web technology, I am striving to provide user-centered
-        solutions. I look forward to creating innovative web applications
-        together through my portfolio.
-      </p>
+      <div class="top">
+        <h1>I'm Junhyeok Choi</h1>
+        <h2>Front-end Developer</h2>
+        <br />
+        <p>
+          3년차 프론트엔드 개발자 최준혁입니다.
+          <br /><br />
+          현재 사이트는 Svelte / Node.js 등을 사용하여 제작되었습니다.
+          <br /><br />
+        </p>
+      </div>
+      <div class="bottom">
+        <div class="h5Wrap">
+          <h5>Skill Stacks</h5>
+        </div>
+        <div class="skills">
+          <span><i class="fa-brands fa-js"></i></span>
+          <span><i class="fa-brands fa-node"></i></span>
+          <span><i class="fa-brands fa-sass"></i></span>
+          <span><img src={svelteLogo} alt="svelte logo" /></span>
+          <span><i class="fa-brands fa-php"></i></span>
+          <span><i class="fa-brands fa-docker"></i></span>
+          <span><i class="fa-brands fa-github"></i></span>
+          <span><i class="fa-brands fa-gitlab"></i></span>
+        </div>
+      </div>
     </nav-m>
   {/if}
 </header>
@@ -397,6 +412,9 @@
       z-index: 2;
       padding: 20px;
       box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
 
       h2 {
         text-shadow: 0px 0px 2px #fff;
@@ -418,6 +436,31 @@
         font-size: 0.9rem;
         letter-spacing: -0.6px;
         transition: all 0.2s;
+      }
+      .h5Wrap {
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+        border-bottom: 1px solid #444;
+
+        h5 {
+          color: #fff;
+          font-weight: normal;
+        }
+      }
+
+      .skills {
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
+        position: relative;
+
+        i {
+          color: #fff;
+          font-size: 24px;
+        }
+        img {
+          width: 24px;
+        }
       }
     }
   }

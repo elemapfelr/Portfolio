@@ -2,6 +2,7 @@
   import { fade } from "svelte/transition";
   import { onMount } from "svelte";
   import Grid from "$lib/components/intro/Grid.svelte";
+  import infoLogo from "$lib/img/info_logo.svg";
   import omockLogo from "$lib/img/omock_logo.svg";
   import only1Logo from "$lib/img/only1_logo.svg";
   import adminLogo from "$lib/img/admin_logo.png";
@@ -42,6 +43,28 @@
   });
 
   let grids = [
+    {
+      title: "About",
+      contents: `안녕하세요<br>
+	  저는 프론트엔드 직군에서 웹 개발을 하고 있습니다. <br>
+	  주로 사용하는 언어는 <b>자바스크립트</b> 입니다. <br><br>
+	  현재 온라인 커머스 데이터를 기반으로 한 금융 서비스를 제공하는 회사에서 경력을 쌓는 중입니다.<br>
+	  사용자 중심의 웹 애플리케이션을 개발하고, 혁신적인 기술을 적용하여 문제를 해결하는 것을 모토로 삼고 있습니다.<br><br>
+	  제 포트폴리오를 통해 제 작업물과 역량을 확인해주시면 감사하겠습니다.<br><br><br>
+	  <h5 style="font-size:1.2rem; margin-bottom:5px;">Contact</h5>
+	  <div style="display:flex; align-items:center; column-gap:5px;">
+		<i class="fa-regular fa-envelope" style="font-size:1.2rem;"></i>
+	  	<a style="text-decoration: underline; color:#777; text-underline-offset:3px;" href="mailto:elemapfelr@naver.com;">elemapfelr@naver.com</a>
+		</div>
+	  `,
+      skills: null,
+      skillStacks: ["이사람이", "뭐하는", "사람인지", "궁금하다면"],
+      link: null,
+      titleImgSrc: infoLogo,
+      sampleImg: null,
+      externalLink: null,
+      clicked: false,
+    },
     {
       title: "Omock",
       contents: `웹소켓을 이용하여 온라인 플레이가 가능한 간단한 오목 게임입니다. <wbr/>
@@ -98,52 +121,13 @@
       clicked: false,
     },
     {
-      title: "grid cell",
-      contents:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam labore fugiat odit, consequuntur obcaecati sunt harum suscipit nemo minima hic? Facere tempora eaque voluptas adipisci at omnis labore repellat. Culpa?",
-      skills: [],
-      skillStacks: [],
-      link: "",
-      externalLink: null,
-      clicked: false,
-    },
-    {
-      title: "grid cell",
-      contents:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam labore fugiat odit, consequuntur obcaecati sunt harum suscipit nemo minima hic? Facere tempora eaque voluptas adipisci at omnis labore repellat. Culpa?",
-      skills: [],
-      skillStacks: [],
-      link: "",
-      externalLink: null,
-      clicked: false,
-    },
-    {
-      title: "grid cell",
-      contents:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam labore fugiat odit, consequuntur obcaecati sunt harum suscipit nemo minima hic? Facere tempora eaque voluptas adipisci at omnis labore repellat. Culpa?",
-      skills: [],
-      skillStacks: [],
-      link: "",
-      externalLink: null,
-      clicked: false,
-    },
-    {
-      title: "grid cell",
-      contents:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam labore fugiat odit, consequuntur obcaecati sunt harum suscipit nemo minima hic? Facere tempora eaque voluptas adipisci at omnis labore repellat. Culpa?",
-      skills: [],
-      skillStacks: [],
-      link: "",
-      externalLink: null,
-      clicked: false,
-    },
-    {
-      title: "grid cell",
-      contents:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam labore fugiat odit, consequuntur obcaecati sunt harum suscipit nemo minima hic? Facere tempora eaque voluptas adipisci at omnis labore repellat. Culpa?",
-      skills: [],
-      skillStacks: [],
-      link: "",
+      title: "What's Next?",
+      contents: "컨텐츠 추가 예정입니다.",
+      skills: null,
+      skillStacks: ["Content is being prepared"],
+      link: null,
+      titleImgSrc: null,
+      sampleImg: null,
       externalLink: null,
       clicked: false,
     },
