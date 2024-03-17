@@ -1,8 +1,7 @@
 <script>
   import { fade, fly } from "svelte/transition";
   import { page } from "$app/stores";
-  import svelteLogo from "$lib/img/logos/svelte_logo.svg";
-  import { onMount } from "svelte";
+  import svelteLogo from "$lib/img/logos/svelte_white_logo.png";
 
   export let loading = true;
 
@@ -40,10 +39,20 @@
         <br /><br />
         현재 사이트는 Svelte / Node.js 등을 사용하여 제작되었습니다.
         <br /><br />
+        제게 관심이 있으시거나 궁금한 점이 있으시다면<br />
+        아래 이메일로 연락주시면 감사하겠습니다.
+        <br /><br />
       </p>
+      <h5 class="contact_title" in:fade={{ duration: 300, delay: 1400 }}>
+        Contact
+      </h5>
+      <div class="contact_email" in:fade={{ duration: 300, delay: 1400 }}>
+        <i class="fa-regular fa-envelope"></i>
+        <a href="mailto:elemapfelr@naver.com;">elemapfelr@naver.com</a>
+      </div>
     {/if}
   </div>
-  <div class="bottom">
+  <div class="nav-bottom">
     {#if $page.url.pathname !== "/"}
       <a href="/" transition:fade>Go Index</a>
     {/if}
@@ -56,38 +65,24 @@
         <h5 in:fade={{ duration: 300, delay: 1500 }}>Skill Stacks</h5>
       {/if}
     </div>
-    <div class="skills">
-      {#if loading}
-        <div class="skeleton_loading" out:fade>
+    {#if loading}
+      <div class="skills" out:fade>
+        <div class="skeleton_loading">
           <div class="skeleton_span"></div>
         </div>
-      {:else}
-        <span in:fade={{ duration: 300, delay: 1500 }}
-          ><i class="fa-brands fa-js"></i></span
-        >
-        <span in:fade={{ duration: 300, delay: 1600 }}
-          ><i class="fa-brands fa-node"></i></span
-        >
-        <span in:fade={{ duration: 300, delay: 1700 }}
-          ><i class="fa-brands fa-sass"></i></span
-        >
-        <span in:fade={{ duration: 300, delay: 1800 }}
-          ><img src={svelteLogo} alt="svelte logo" /></span
-        >
-        <span in:fade={{ duration: 300, delay: 1900 }}
-          ><i class="fa-brands fa-php"></i></span
-        >
-        <span in:fade={{ duration: 300, delay: 2000 }}
-          ><i class="fa-brands fa-docker"></i></span
-        >
-        <span in:fade={{ duration: 300, delay: 2100 }}
-          ><i class="fa-brands fa-github"></i></span
-        >
-        <span in:fade={{ duration: 300, delay: 2200 }}
-          ><i class="fa-brands fa-gitlab"></i></span
-        >
-      {/if}
-    </div>
+      </div>
+    {:else}
+      <div class="skills" in:fade={{ duration: 300, delay: 1600 }}>
+        <span><i class="fa-brands fa-js"></i></span>
+        <span><i class="fa-brands fa-node"></i></span>
+        <span><i class="fa-brands fa-sass"></i></span>
+        <span><img src={svelteLogo} alt="svelte logo" /></span>
+        <span><i class="fa-brands fa-php"></i></span>
+        <span><i class="fa-brands fa-docker"></i></span>
+        <span><i class="fa-brands fa-github"></i></span>
+        <span><i class="fa-brands fa-gitlab"></i></span>
+      </div>
+    {/if}
   </div>
 </nav>
 <header>
@@ -108,7 +103,15 @@
           <br /><br />
           현재 사이트는 Svelte / Node.js 등을 사용하여 제작되었습니다.
           <br /><br />
+          제게 관심이 있으시거나 궁금한 점이 있으시다면<br />
+          아래 이메일로 연락주시면 감사하겠습니다.
+          <br /><br />
         </p>
+        <h5 class="contact_title">Contact</h5>
+        <div class="contact_email">
+          <i class="fa-regular fa-envelope"></i>
+          <a href="mailto:elemapfelr@naver.com;">elemapfelr@naver.com</a>
+        </div>
       </div>
       <div class="bottom">
         <div class="h5Wrap">
@@ -290,9 +293,29 @@
         transition: all 0.2s;
         font-weight: 300;
       }
+
+      h5 {
+        font-size: 1rem;
+        font-weight: normal;
+        margin-bottom: 5px;
+      }
+      .contact_email {
+        display: flex;
+        align-items: center;
+        column-gap: 5px;
+
+        i {
+          font-size: 1rem;
+          color: #777;
+        }
+        a {
+          color: #777;
+          text-underline-offset: 3px;
+        }
+      }
     }
 
-    .bottom {
+    .nav-bottom {
       a {
         padding: 10px 30px 9px;
         text-decoration: none;
@@ -356,12 +379,21 @@
             height: 24px;
           }
         }
-        i {
-          color: #fff;
-          font-size: 24px;
-        }
-        img {
+
+        span {
+          display: block;
           width: 24px;
+          height: auto;
+
+          i {
+            color: #fff;
+            font-size: 20px;
+            display: block;
+          }
+          img {
+            width: 20px;
+            display: block;
+          }
         }
       }
     }
@@ -372,7 +404,7 @@
     height: 50px;
     display: none;
     position: relative;
-    a {
+    > a {
       line-height: 50px;
       height: 100%;
       padding: 0 30px;
@@ -437,6 +469,26 @@
         letter-spacing: -0.6px;
         transition: all 0.2s;
       }
+      h5 {
+        font-size: 1rem;
+        font-weight: normal;
+        margin-bottom: 5px;
+        color: #fff;
+      }
+      .contact_email {
+        display: flex;
+        align-items: center;
+        column-gap: 5px;
+
+        i {
+          font-size: 1rem;
+          color: #777;
+        }
+        a {
+          color: #777;
+          text-underline-offset: 3px;
+        }
+      }
       .h5Wrap {
         padding-bottom: 5px;
         margin-bottom: 5px;
@@ -454,12 +506,20 @@
         column-gap: 10px;
         position: relative;
 
-        i {
-          color: #fff;
-          font-size: 24px;
-        }
-        img {
-          width: 24px;
+        span {
+          display: block;
+          width: 20px;
+          height: auto;
+
+          i {
+            color: #fff;
+            font-size: 100%;
+            display: block;
+          }
+          img {
+            width: 20px;
+            display: block;
+          }
         }
       }
     }

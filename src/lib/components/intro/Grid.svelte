@@ -5,16 +5,18 @@
 
   export let i;
   export let loading;
-  export let title;
-  export let contents;
-  export let link;
-  export let externalLink;
-  export let skills;
-  export let titleImgSrc;
-  export let clicked;
+  export let item;
   export let overflowHidden;
-  export let sampleImg;
-  export let skillStacks;
+
+  let clicked = item.clicked;
+  let title = item.title;
+  let contents = item.contents;
+  let skills = item.skills;
+  let skillStacks = item.skillStacks;
+  let link = item.link;
+  let externalLink = item.externalLink;
+  let titleImgSrc = item.titleImgSrc;
+  let sampleImg = item.sampleImg;
 
   function goLink() {
     if (externalLink) {
@@ -84,6 +86,29 @@
     >
       <h5>{title}</h5>
       <p>{@html contents}</p>
+      {#if title == "About"}
+        <div class="history">
+          <h3>경력</h3>
+          {#each item.history as his}
+            <div class="his">
+              <span>{his.duration}</span>
+              <div class="title">
+                <div class="left">
+                  {#if his.logo}
+                    <img src={his.logo} alt="" />
+                  {:else}
+                    <div class="circle"></div>
+                  {/if}
+                </div>
+                <div class="right">
+                  <p>{his.cp_name}</p>
+                  <p>{his.act}</p>
+                </div>
+              </div>
+            </div>
+          {/each}
+        </div>
+      {/if}
       {#if sampleImg}
         <img src={sampleImg} alt="sample" />
       {/if}
@@ -184,7 +209,7 @@
     .details {
       width: 100%;
       max-width: 800px;
-      max-height: 100%;
+      //   max-height: 100%;
 
       h5 {
         text-align: left;
@@ -196,6 +221,65 @@
         font-size: 1.2rem;
         text-align: left;
         letter-spacing: -1px;
+      }
+
+      .history {
+        margin-top: 30px;
+        h3 {
+          font-size: 1.5rem;
+          position: relative;
+          margin-left: 5px;
+          text-indent: 5px;
+          &::before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: -3px;
+            left: -10px;
+            width: 5px;
+            height: 100%;
+            background-color: #777;
+          }
+        }
+        .his {
+          margin: 10px 0;
+          border: 1px solid #ddd;
+          padding: 20px;
+          box-sizing: border-box;
+          border-radius: 20px;
+          span {
+            display: block;
+            color: #777;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+          }
+          .title {
+            display: flex;
+            align-items: center;
+            column-gap: 10px;
+            .left {
+              width: 50px;
+              height: 50px;
+              overflow: hidden;
+              border-radius: 50px;
+              img {
+                width: 100%;
+                margin: 0;
+              }
+              .circle {
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(135deg, #81ffef 10%, #f067b4 100%);
+              }
+            }
+            .right {
+              flex: 1;
+              p {
+                font-size: 1rem;
+              }
+            }
+          }
+        }
       }
 
       img {
@@ -398,6 +482,38 @@
 
         p {
           font-size: 0.7rem;
+        }
+        .history {
+          h3 {
+            font-weight: 300;
+            font-size: 1rem;
+            margin-left: 10px;
+            text-indent: 3px;
+            &::before {
+              width: 3px;
+            }
+          }
+          .his {
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 20px;
+            span {
+              font-size: 0.7rem;
+            }
+            .title {
+              .left {
+                width: 40px;
+                height: 40px;
+              }
+              .right {
+                p {
+                  font-size: 0.8rem;
+                }
+              }
+            }
+          }
         }
       }
       .bottom {

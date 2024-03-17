@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
   import Grid from "$lib/components/intro/Grid.svelte";
   import infoLogo from "$lib/img/info_logo.svg";
+  import portfolioLogo from "$lib/img/portfolio_logo.png";
   import omockLogo from "$lib/img/omock_logo.svg";
   import only1Logo from "$lib/img/only1_logo.svg";
   import adminLogo from "$lib/img/admin_logo.png";
@@ -18,6 +19,8 @@
   import sassLogo from "$lib/img/logos/sass_logo.png";
   import sshLogo from "$lib/img/logos/ssh_logo.png";
   import ejsLogo from "$lib/img/logos/ejs_logo.svg";
+  import oracleLogo from "$lib/img/logos/oracle_logo.svg";
+  import pm2Logo from "$lib/img/logos/pm2_logo.png";
 
   let s_time = new Date();
   let loading = true;
@@ -50,17 +53,43 @@
 	  주로 사용하는 언어는 <b>자바스크립트</b> 입니다. <br><br>
 	  현재 온라인 커머스 데이터를 기반으로 한 금융 서비스를 제공하는 회사에서 경력을 쌓는 중입니다.<br>
 	  사용자 중심의 웹 애플리케이션을 개발하고, 혁신적인 기술을 적용하여 문제를 해결하는 것을 모토로 삼고 있습니다.<br><br>
-	  제 포트폴리오를 통해 제 작업물과 역량을 확인해주시면 감사하겠습니다.<br><br><br>
-	  <h5 style="font-size:1.2rem; margin-bottom:5px;">Contact</h5>
-	  <div style="display:flex; align-items:center; column-gap:5px;">
-		<i class="fa-regular fa-envelope" style="font-size:1.2rem;"></i>
-	  	<a style="text-decoration: underline; color:#777; text-underline-offset:3px;" href="mailto:elemapfelr@naver.com;">elemapfelr@naver.com</a>
-		</div>
+	  제 포트폴리오를 통해 제 작업물과 역량을 확인해주시면 감사하겠습니다.
 	  `,
       skills: null,
       skillStacks: ["이사람이", "뭐하는", "사람인지", "궁금하다면"],
       link: null,
       titleImgSrc: infoLogo,
+      sampleImg: null,
+      externalLink: null,
+      clicked: false,
+      history: [
+        {
+          logo: only1Logo,
+          cp_name: "주식회사 온리원",
+          act: "웹 퍼블리셔 / 프론트엔드 개발자",
+          duration: "2021/10 ~ 재직중",
+        },
+        {
+          logo: null,
+          cp_name: "직업능력개발훈련",
+          act: "스마트기기 UXUI 웹디자인&웹퍼블리셔 과정 수료",
+          duration: "2021/04 ~ 2021/08",
+        },
+      ],
+    },
+    {
+      title: "Portfolio",
+      contents: `현재 보고 계신 포트폴리오 사이트는<br>
+	  스벨트(Svelte)를 사용하여 프론트엔드 영역을 개발하였고,<br>
+	  백엔드는 Node.js를 기반으로 구축하였습니다.<br><br>
+	  또한 어플리케이션의 원활한 구동을 위해 pm2 런타임을 사용하여<br>
+	  서버에 오류가 발생하더라도 서비스가 중단되지 않고 자동으로 재시작 하도록 설정하였습니다.<br><br>
+	  오라클 클라우드의 가상 컴퓨팅 인스턴스를 활용하여 사이트를 호스팅하고 있으며,<br>
+	  도메인을 통해 접근이 용이하도록 구성되어 있습니다.`,
+      skills: [svelteLogo, jsLogo, nodejsLogo, sassLogo, oracleLogo, pm2Logo],
+      skillStacks: ["svelte", "js", "nodejs", "scss", "oci", "pm2"],
+      link: null,
+      titleImgSrc: portfolioLogo,
       sampleImg: null,
       externalLink: null,
       clicked: false,
@@ -138,20 +167,7 @@
 
 <div class="gridArea {overflowHidden ? 'no-overflow' : ''}" out:fade>
   {#each grids as item, i}
-    <Grid
-      {i}
-      {loading}
-      bind:overflowHidden
-      clicked={item.clicked}
-      title={item.title}
-      contents={item.contents}
-      skills={item.skills}
-      skillStacks={item.skillStacks}
-      link={item.link}
-      externalLink={item.externalLink}
-      titleImgSrc={item.titleImgSrc}
-      sampleImg={item.sampleImg}
-    ></Grid>
+    <Grid {i} {loading} bind:overflowHidden {item}></Grid>
   {/each}
 </div>
 
