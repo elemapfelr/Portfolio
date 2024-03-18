@@ -89,7 +89,10 @@
 	{:else if galleryType == "multi"}
 		<div class="gallery multi">
 			{#each galleryImg as item}
-				<div class="imgWrap" style="background-image: url({item})"></div>
+				<div
+					class="imgWrap"
+					style="background-image: url({item})"
+				></div>
 			{/each}
 		</div>
 		<div class="progress-bar-track">
@@ -240,10 +243,26 @@
 
 			h3 {
 				letter-spacing: -1px;
-				margin-top: 30px;
+				margin-top: 40px;
+				margin-bottom: 5px;
+				font-weight: 300;
+				position: relative;
+				margin-left: 5px;
+				text-indent: 5px;
+				&::after {
+					content: "";
+					width: 2px;
+					height: 100%;
+					display: block;
+					position: absolute;
+					top: 0;
+					left: -5px;
+					background-color: #cacaca;
+				}
 			}
 			p {
 				letter-spacing: -0.7px;
+				line-height: 1.6;
 			}
 		}
 
@@ -357,7 +376,7 @@
 				margin: 20px 0;
 				transition: all 0.2s;
 				h3 {
-					margin-top: 15px;
+					margin-top: 30px;
 					font-size: 1rem;
 					letter-spacing: -0.8px;
 					transition: all 0.2s;
