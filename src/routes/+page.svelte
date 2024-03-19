@@ -8,11 +8,13 @@
 	import only1Logo from "$lib/img/only1_logo.svg";
 	import adminLogo from "$lib/img/admin_logo.png";
 	import sellerbotLogo from "$lib/img/sellerbot_logo.svg";
+	import sodeoneLogo from "$lib/img/sodeone_logo.svg";
 	import omockSample from "$lib/img/omock_sample.png";
 	import only1Sample from "$lib/img/only1_sample.png";
 	import adminSample from "$lib/img/admin_sample.png";
 	import sellerbotSignupSample from "$lib/img/sellerbot_signup_sample.png";
 	import manageMallSample from "$lib/img/manage_mall_sample.png";
+	import sodeoneSample from "$lib/img/sodeone_sample.png";
 	import htmlLogo from "$lib/img/logos/html_logo.png";
 	import svelteLogo from "$lib/img/logos/svelte_logo.png";
 	import jsLogo from "$lib/img/logos/javascript_logo.png";
@@ -262,8 +264,8 @@
 			skills: [phpLogo, jsLogo, sassLogo],
 			skillStacks: ["php", "js", "scss"],
 			link: "/manage_mall",
-			titleImgSrc: sellerbotLogo,
-			sampleImg: manageMallSample,
+			titleImgSrc: sodeoneLogo,
+			sampleImg: sodeoneSample,
 			externalLink: null,
 			clicked: false,
 		},
