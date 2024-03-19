@@ -170,6 +170,7 @@
 			font-size: 1rem;
 			letter-spacing: -1.4px;
 			margin: 5px 0 10px 0;
+			text-wrap: balance;
 		}
 
 		.gallery {

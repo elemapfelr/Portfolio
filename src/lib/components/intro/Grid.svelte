@@ -139,7 +139,7 @@
 			out:fly={{ y: -200, duration: 500 }}
 		>
 			{#if link}
-				<button on:click={goLink}>Go!</button>
+				<button on:click={goLink}>Learn more</button>
 			{/if}
 			{#if skills}
 				<p class="skillsTitle">Used Skill Stacks</p>

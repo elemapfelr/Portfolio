@@ -8,7 +8,7 @@
 	import only1Logo from "$lib/img/only1_logo.svg";
 	import adminLogo from "$lib/img/admin_logo.png";
 	import sellerbotLogo from "$lib/img/sellerbot_logo.svg";
-	import sodeoneLogo from "$lib/img/sodeone_logo.svg";
+	import sodeoneLogo from "$lib/img/sodeone_logo.png";
 	import omockSample from "$lib/img/omock_sample.png";
 	import only1Sample from "$lib/img/only1_sample.png";
 	import adminSample from "$lib/img/admin_sample.png";
@@ -260,7 +260,7 @@
 		{
 			title: "Sodeone Home Page",
 			contents: `계열사(소드원) 홈페이지 리뉴얼 프로젝트 입니다.<br>
-			셀러봇캐시의 정산 예정금 데이터를 활용하여 금융서비스를 제공합니다.`,
+			셀러봇캐시의 정산 예정금 데이터를 활용하여 금융서비스를 제공하는 금융 플랫폼입니다.`,
 			skills: [phpLogo, jsLogo, sassLogo],
 			skillStacks: ["php", "js", "scss"],
 			link: "/sodeone",
