@@ -263,7 +263,7 @@
 			셀러봇캐시의 정산 예정금 데이터를 활용하여 금융서비스를 제공합니다.`,
 			skills: [phpLogo, jsLogo, sassLogo],
 			skillStacks: ["php", "js", "scss"],
-			link: "/manage_mall",
+			link: "/sodeone",
 			titleImgSrc: sodeoneLogo,
 			sampleImg: sodeoneSample,
 			externalLink: null,
