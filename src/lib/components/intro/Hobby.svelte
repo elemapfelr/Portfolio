@@ -24,6 +24,8 @@
   import fashion_6 from "$lib/img/about/fashion_6.jpg";
   import fashion_7 from "$lib/img/about/fashion_7.jpg";
 
+  export let setModalContent;
+
   let list = [
     {
       logo: hiking,
@@ -88,8 +90,16 @@
       <p class="desc">{item.desc}</p>
       <div class="images">
         {#each item.images as image}
+          <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
           <div>
-            <img src={image} alt="" />
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <img
+              src={image}
+              alt=""
+              on:click={() => {
+                setModalContent(image);
+              }}
+            />
           </div>
         {/each}
       </div>

@@ -2,6 +2,7 @@
   import { fade } from "svelte/transition";
   import { onMount } from "svelte";
   import Grid from "$lib/components/intro/Grid.svelte";
+  import Modal from "$lib/components/intro/Modal.svelte";
   import infoLogo from "$lib/img/info_logo.svg";
   import portfolioLogo from "$lib/img/portfolio_logo.png";
   import omockLogo from "$lib/img/omock_logo.svg";
@@ -178,26 +179,36 @@
       externalLink: null,
       clicked: false,
     },
-    {
-      title: "What's Next?",
-      contents: "컨텐츠 추가 예정입니다.",
-      skills: null,
-      skillStacks: ["Content is being prepared"],
-      link: null,
-      titleImgSrc: null,
-      sampleImg: null,
-      externalLink: null,
-      clicked: false,
-    },
+    // {
+    //   title: "What's Next?",
+    //   contents: "컨텐츠 추가 예정입니다.",
+    //   skills: null,
+    //   skillStacks: ["Content is being prepared"],
+    //   link: null,
+    //   titleImgSrc: null,
+    //   sampleImg: null,
+    //   externalLink: null,
+    //   clicked: false,
+    // },
   ];
 
   $: overflowHidden = false;
+
+  let modalContent = null;
+  function setModalContent(prop) {
+    modalContent = prop;
+  }
 </script>
 
 <div class="gridArea {overflowHidden ? 'no-overflow' : ''}" out:fade>
   {#each grids as item, i}
-    <Grid {i} {loading} bind:overflowHidden {item}></Grid>
+    {#if item.title == "About"}
+      <Grid {i} {loading} bind:overflowHidden {item} {setModalContent}></Grid>
+    {:else}
+      <Grid {i} {loading} bind:overflowHidden {item}></Grid>
+    {/if}
   {/each}
+  <Modal content={modalContent} />
 </div>
 
 <!-- </div> -->

@@ -9,6 +9,7 @@
   export let loading;
   export let item;
   export let overflowHidden;
+  export let setModalContent = () => {};
 
   let clicked = item.clicked;
   let title = item.title;
@@ -109,7 +110,7 @@
         {#if activeButton === 1}
           <History />
         {:else if activeButton === 2}
-          <Hobby />
+          <Hobby {setModalContent} />
         {/if}
       {/if}
       {#if sampleImg}
