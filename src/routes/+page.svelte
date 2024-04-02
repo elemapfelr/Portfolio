@@ -14,6 +14,7 @@
 	import adminSample from "$lib/img/admin_sample.png";
 	import sellerbotSignupSample from "$lib/img/sellerbot_signup_sample.png";
 	import manageMallSample from "$lib/img/manage_mall_sample.png";
+	import fastSettledSample from "$lib/img/fast_settled_sample.png";
 	import sodeoneSample from "$lib/img/sodeone_sample.png";
 	import htmlLogo from "$lib/img/logos/html_logo.png";
 	import svelteLogo from "$lib/img/logos/svelte_logo.png";
@@ -254,6 +255,18 @@
 			link: "/manage_mall",
 			titleImgSrc: sellerbotLogo,
 			sampleImg: manageMallSample,
+			externalLink: null,
+			clicked: false,
+		},
+		{
+			title: "Sellerbot Cash Fast Settle",
+			contents: `셀러봇캐시에 등록된 쇼핑몰에 대한 정산예정금을<br>
+			정산예정일보다 빠르게 활용할 수 있도록 미리 정산해주는 서비스 입니다.`,
+			skills: [htmlLogo, jsLogo, sassLogo],
+			skillStacks: ["html", "js", "scss"],
+			link: "/fast_settled",
+			titleImgSrc: sellerbotLogo,
+			sampleImg: fastSettledSample,
 			externalLink: null,
 			clicked: false,
 		},
