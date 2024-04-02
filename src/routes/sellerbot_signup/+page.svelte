@@ -42,7 +42,7 @@
 			desc: "상호작용 시 더 나은 사용자 경험을 위한 트랜지션과 애니메이션 추가",
 		},
 	];
-	let link = "https://www.sellerbot.co.kr/pub/member/step1";
+	let link = "/demo/sellerbot_signup/step_01";
 </script>
 
 <InfoBoard
@@ -53,4 +53,5 @@
 	{skillStacks}
 	{desc}
 	{link}
+	demoLink=true
 />

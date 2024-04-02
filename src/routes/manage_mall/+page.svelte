@@ -48,7 +48,7 @@
 			desc: "지역적 상태 관리용 객체를 선언하여 변화 감지",
 		},
 	];
-	let link = null;
+	let link = "/demo/sellerbot_mall_manage/index";
 </script>
 
 <InfoBoard
@@ -59,4 +59,5 @@
 	{skillStacks}
 	{desc}
 	{link}
+	demoLink=true
 />

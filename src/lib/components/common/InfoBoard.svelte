@@ -9,6 +9,7 @@
 	export let skillStacks;
 	export let desc;
 	export let link;
+	export let demoLink = false;
 
 	onMount(() => {
 		if (galleryType == "vertical") {
@@ -119,7 +120,11 @@
 	{#if link}
 		<button class="go" on:click={openWindow}>
 			<p class="link">
+				{#if demoLink}
+				데모 페이지 <i class="fa-regular fa-window-restore"></i>
+				{:else}
 				웹페이지 방문 <i class="fa-regular fa-window-restore"></i>
+				{/if}
 			</p>
 		</button>
 	{/if}
