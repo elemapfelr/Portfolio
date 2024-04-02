@@ -1,0 +1,525 @@
+@import "./common", "./modal", "./selectbox";
+
+article {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+article#topMenus {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    column-gap: 40px;
+
+    p {
+        font-size: 18px;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    ul {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        column-gap: 10px;
+
+        li {
+            min-width: 150px;
+
+            a {
+                width: 100%;
+                font-size: 14px;
+                font-weight: 500;
+                letter-spacing: -0.7px;
+                color: #aaaaaa;
+                padding: 5px 0;
+                text-align: center;
+                display: block;
+            }
+
+            &.active {
+                border-bottom: 2px solid #2dabe8;
+
+                a {
+                    color: #2dabe8;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
+
+article#chart{
+    margin-top: 40px;
+    .flex{
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        h5{
+            font-size: 14px;
+            letter-spacing: -0.6px;
+            text-align: center;
+            color: #202020;
+            padding: 10px 39px 10px 39px;
+            border: solid 1px #dddee2;
+            background-color: #f5f6f9;
+            box-sizing: border-box;
+        }
+
+        select{
+            border-left: none;
+        }
+    }
+
+    .topChart{
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        p{
+            font-size: 14px;
+            letter-spacing: -0.6px;
+            text-align: left;
+            color: #202020;
+        }
+        span{
+            font-size: 14px;
+            letter-spacing: -0.6px;
+            text-align: right;
+            color: #bfbfbf;
+        }
+    }
+
+    .chartArea{
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 20px;
+        row-gap: 40px;
+
+        .chart_1, .chart_2, .chart_3{
+            .chartWrap{
+                border: 1px solid #dddee2;
+                box-sizing: border-box;
+            }
+        }
+
+        .chart_1, .chart_2{
+            width: calc(50% - 10px);
+
+            .chartWrap{
+                canvas{
+                    height: 300px;
+                }
+            }
+
+            .bottomText{
+                padding: 20px;
+                box-sizing: border-box;
+                background-color: #f5f6f9;
+
+                p{
+                    font-size: 14px;
+                    font-weight: 500;
+                    line-height: 1.71;
+                    letter-spacing: -0.98px;
+                    text-align: left;
+                    color: #202020;
+                }
+            }
+        }
+
+        .chart_3{
+            width: 100%;
+
+            p.title{
+                font-size: 14px;
+                letter-spacing: -0.6px;
+                text-align: left;
+                color: #202020;
+            }
+            .chartWrap{
+                margin-top: 10px;
+
+                canvas{
+                    height: 400px;
+                }
+            }
+        }
+    }
+}
+
+article#detail{
+    margin-top: 40px;
+    margin-bottom: 200px;
+    .flex{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .left{
+            display: flex;
+            align-items: center;
+
+            h5{
+                font-size: 14px;
+                letter-spacing: -0.6px;
+                text-align: center;
+                color: #202020;
+                padding: 10px 39px 10px;
+                border: solid 1px #dddee2;
+                background-color: #f5f6f9;
+                box-sizing: border-box;
+                white-space: nowrap;
+            }
+    
+            select{
+                border-left: none;
+            }
+        }
+
+        .center{
+            display: flex;
+            align-items: center;
+
+            h5{
+                font-size: 14px;
+                letter-spacing: -0.6px;
+                text-align: center;
+                color: #202020;
+                padding: 10px 39px 10px 39px;
+                border: solid 1px #dddee2;
+                background-color: #f5f6f9;
+                box-sizing: border-box;
+                white-space: nowrap;
+            }
+
+            .contents{
+                display: flex;
+                align-items: center;
+                padding: 6px 25px 7px;
+                border: solid 1px #dddee2;
+                border-left: none;
+                background-color: #fff;
+                box-sizing: border-box;
+
+                ul.period {
+                    display: flex;
+                    align-items: center;
+                    column-gap: 2px;
+                    margin-left: 10px;
+    
+                    li {
+                        width: 44px;
+                        padding: 1px 4px 2px;
+                        border-radius: 9px;
+                        border: solid 1px #e8eaef;
+                        background-color: #f5f6f9;
+                        font-size: 10px;
+                        letter-spacing: -0.5px;
+                        text-align: center;
+                        color: #202020;
+                        cursor: pointer;
+
+                        &:hover{
+                            font-weight: bold;
+                        }
+                    }
+                }
+    
+                input[type='month'] {
+                    border: solid 1px #dddee2;
+                    position: relative; // 캘린더 아이콘을 클릭해야만 달력이 보이기 때문에 이 영역 자체를 제어하기 위해 설정 
+                    // width: 100%;
+                    padding: 4px 5px;
+                    background: #f5f6f9;
+                    text-align: center;
+                    font-size: 10px;
+                    letter-spacing: -0.5px;
+                    color: #202020;
+                }
+    
+                // 실제 캘린더 아이콘을 클릭하는 영역을 의미하는 선택자
+                // 이 영역을 확장해서 input의 어떤 곳을 클릭해도 캘린더를 클릭한 것과 같은 효과를 만들자!
+                input[type='month']::-webkit-calendar-picker-indicator {
+                    position: absolute; // 이를 설정하기 위해 사전에 relative를 설정한 것이다.
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: transparent; // 배경은 투명하게,
+                    color: transparent; // 글자도 투명하게! 이 두 설정을 통해 캘린더 아이콘을 사라지게 만든다.
+                    cursor: pointer;
+                }
+
+                input[type='month']:valid::before {
+                    display: none; // 유효값이 입력된 경우 before에 있는 것을 사라지게 한다. 즉, placeholder를 사라지게 한다.
+                }
+    
+                span.fromTo {
+                    margin: 0 8px;
+                    font-size: 12px;
+                    letter-spacing: -0.5px;
+                    text-align: center;
+                    color: #202020;
+                }
+            }
+        }
+
+        button{
+            width: 120px;
+            display: block;
+            padding: 11px 0 11px 0;
+            border-radius: 2px;
+            background-color: #202020;
+            font-size: 14px;
+            letter-spacing: -0.6px;
+            text-align: center;
+            color: #fff;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+    }
+    .title{
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        p{
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: -0.7px;
+            text-align: left;
+            color: #202020;
+        }
+        span{
+            margin-left: 5px;
+            width: 14px;
+            height: 14px;
+            border: 1px solid #dddee2;
+            border-radius: 14px;
+            font-size: 10px;
+            text-align: center;
+            display: block;
+            font-weight: bold;
+            text-indent: -1px;
+            line-height: 1.4;
+            cursor: pointer;
+        }
+
+        .detailHoverPopup{
+            display: none;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 80px;
+            background-color: #fff;
+            width: 50%;
+            min-width: 250px;
+            padding: 10px;
+            box-shadow: 0 0 6px #dddee2;
+            border-radius: 8px;
+            transition: all .3s;
+            .popupHead{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 10px;
+                h5{
+                    font-size: 14px;
+                }
+                button{
+                    border: none;
+                    outline: none;
+                    background: none;
+                    cursor: pointer;
+                    padding: 5px 10px;
+                }
+            }
+            p.content{
+                font-size: 12px;
+            }
+
+            &.show{
+                display: block;
+            }
+        }
+    }
+    .tableWrap{
+        margin-top: 10px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+    
+            thead {
+                tr {
+                    td {
+                        border: 1px solid #dddee2;
+                        padding: 12px 0 11px 0;
+                        font-size: 14px;
+                        letter-spacing: -0.6px;
+                        text-align: center;
+                        color: #202020;
+    
+                        &.gray_1 {
+                            background-color: #f5f6f9;
+                        }
+    
+                        &.gray_2 {
+                            background-color: #ecedf0;
+                        }
+    
+                        &.gray_3 {
+                            background-color: #d2d3d9;
+                        }
+                    }
+                }
+            }
+            tbody {
+                tr {
+                    td {
+                        border: 1px solid #dddee2;
+                        padding: 12px 0 13px 0;
+                        font-size: 14px;
+                        letter-spacing: -0.6px;
+                        text-align: center;
+                        color: #202020;
+    
+                        &.gray_1 {
+                            background-color: #f5f6f9;
+                        }
+    
+                        &.gray_2 {
+                            background-color: #ecedf0;
+                        }
+    
+                        &.gray_3 {
+                            background-color: #d2d3d9;
+                        }
+
+                        &.blue{
+                            background-color: #d6e3ff;
+                            border: 1px solid $blue;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    p.underTable{
+        margin-top: 20px;
+        font-size: 14px;
+        letter-spacing: -0.6px;
+        text-align: left;
+        color: #202020;
+    }
+}
+
+@media only screen and (max-width: 1215px) {
+    article#detail{
+        .flex{
+            .left{
+                flex-direction: column;
+    
+                h5{
+                    width: 100%;
+                }
+        
+                select{
+                    border-left: solid 1px #dddee2;
+                }
+            }
+    
+            .center{
+                flex-direction: column;
+    
+                h5{
+                    width: 100%;
+                }
+    
+                .contents{
+                    border-left: solid 1px #dddee2;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 945px) {
+    article#chart{
+        .flex{
+            flex-direction: column;
+            h5{
+                width: 100%;
+            }
+            select{
+                width: 100%;
+                border-left: solid 1px #dddee2;
+                padding-right: 20px;
+                background: url(./../img/select_arrow.svg) no-repeat 95% 50%;
+            }
+        }
+        .chartArea{
+            flex-direction: column;
+
+            .chart_1, .chart_2{
+                width: 100%;
+            }
+        }
+    }
+    article#detail{
+        .flex{
+            flex-direction: column;
+            .left{
+                width: 100%;
+                select{
+                    width: 100%;
+                    padding-right: 20px;
+                    background: url(./../img/select_arrow.svg) no-repeat 95% 50%;
+                }
+            }
+    
+            .center{
+                width: 100%;
+                .contents{
+                    width: 100%;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    row-gap: 10px;
+                }
+            }
+            button{
+                margin-top: 10px;
+            }
+        }
+        .tableWrap{
+            overflow-x: scroll;
+            outline: 1px solid #e2e2e2;
+            outline-offset: -1px;
+
+            &::-webkit-scrollbar {
+                width: 12px;
+                height: 12px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background-color: #fff;
+                border: 1px solid #e2e2e2;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: #f2f2f2;
+                border: 1px solid #e2e2e2;
+            }
+
+            table{
+                min-width: 836px;
+            }
+        }
+    }
+}

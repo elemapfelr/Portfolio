@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>셀러봇캐시 자동입금 대사관리</title>
+	<link rel="stylesheet" href="./css/inquiryStatistics.css">
+	<script type="module" src="./js/common.js" defer></script>
+	<script type="module" src="./js/inquiryStatistics.js" defer></script>
+	<script src="https://kit.fontawesome.com/9f79428ef0.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<header>
+		<div class="top">
+			<div class="notification">
+				<div class="text">
+					<i class="fa-solid fa-bell"></i>
+					<div class="notiWrap">
+						<ul>
+							<li>[공지사항] [신규 판매몰 지원] 발란 - 판매몰등록 안내</li>
+							<li>[공지사항] [신규 판매몰 지원] WIZWID - 판매몰등록 안내</li>
+							<li>[공지사항] [신규 판매몰 지원] 29CM - 판매몰등록 안내</li>
+						</ul>
+					</div>
+				</div>
+				<button id="closeHeaderNoti"><img src="./img/xmark.svg" alt="xmark"></button>
+			</div>
+		</div>
+		<div class="bottom">
+			<div class="logo"><img src="./img/sellerbotLogo.svg" alt="sellerbot"></div>
+			<div class="right">
+				<button>로그인</button>
+				<span></span>
+				<button>회원가입</button>
+				<span></span>
+				<button>고객센터</button>
+			</div>
+		</div>
+	</header>
+	<main>
+		<section>
+			<article id="topMenus">
+				<p>자동입금 대사관리</p>
+				<ul>
+					<li><a href="https://dev.sellerbot.co.kr/sellerbot_signup/inquiryList.html">대사목록</a></li>
+					<li class="active"><a href="./inquiryStatistics.html">대사 이용통계</a></li>
+					<li><a href="./orderMatching.html">주문/입금 매칭내역</a></li>
+					<li><a href="./inquiryException.html">대사제외 단어 설정</a></li>
+					<li><a href="#" id="supportingBank">지원은행</a></li>
+				</ul>
+			</article>
+			<article id="chart">
+				<div class="flex">
+					<h5>계좌선택</h5>
+					<select name="select_acc" id="select_acc">
+						<option value="">국민은행 8054526255123(주거래은행)</option>
+					</select>
+				</div>
+				<div class="topChart">
+					<p>[2023년 5월~7월 입금내역 분석]</p>
+					<span>*입금내역 기준/ *대사제외 건 반영안함</span>
+				</div>
+				<div class="chartArea">
+					<div class="chart_1">
+						<div class="chartWrap">
+							<canvas></canvas>
+						</div>
+						<div class="bottomText">
+							<p>최근 3개월 간 총 70건, 910,000원의 대사 이용이 확인되었습니다.</p>
+							<p>입금금액이 많은 달 : 2023년 7월 800,000원(20건)</p>
+							<p>입금금액이 적은 달 : 2023년 6월 40,000원(10건)</p>
+						</div>
+					</div>
+					<div class="chart_2">
+						<div class="chartWrap">
+							<canvas></canvas>
+						</div>
+						<div class="bottomText">
+							<p>최근 3개월간 총 주문금액은 10,000,000원이며, 입금금액은 1,500,000원으로 집계됩니다.</p>
+							<p>주문금액이 많은 달 : 2023년 7월, 2023년 6월</p>
+							<p>입금금액이 많은 달 : 2023년 6월</p>
+						</div>
+					</div>
+					<div class="chart_3">
+						<p class="title">[2023년 11월]</p>
+						<div class="chartWrap">
+							<canvas></canvas>
+						</div>
+					</div>
+				</div>
+			</article>
+			<article id="detail">
+				<div class="flex">
+					<div class="left">
+						<h5>계좌선택</h5>
+						<select name="select_acc" id="select_acc">
+							<option value="">국민은행 8054526255123(주거래은행)</option>
+						</select>
+					</div>
+					<div class="center">
+						<h5>날짜선택</h5>
+						<div class="contents">
+							<input type="month" id="periodFrom">
+							<span class="fromTo">~</span>
+							<input type="month" id="periodTo">
+							<ul class="period" id="period">
+								<li value="11">최근 1년</li>
+								<li value="5">최근 6개월</li>
+								<li value="2">최근 3개월</li>
+								<li value="1">전월</li>
+							</ul>
+						</div>
+					</div>
+					<button id="searchBtn">조회하기</button>
+				</div>
+				<div class="title">
+					<p>상세내역</p>
+					<span id="detailHoverBtn">?</span>
+					<div class="detailHoverPopup">
+						<div class="popupHead">
+							<h5>상세내역</h5>
+							<button><i class="fa-solid fa-xmark"></i></button>
+						</div>
+						<p class="content">
+							<b>전체 합계</b> = 자동확인 + 수동입금 + 미확인건
+							<br><br>
+							<b>자동확인 합</b> = 주문내역과 입금내역이 일치한 건
+							<br>
+							<b>수동입금 합</b> = 입금내역에 맞는 '주문건'을 직접 선택하고, 입금확인으로 처리한 건
+							<br>
+							<b>미확인 합계</b> = 최초 미확인건으로 확인되더라도, 이후 수동처리 시 해당 건수는 수동입금합계로 집계됨
+							<br><br>
+							<b>[참고사항]</b>
+							<br><br>
+							- 입금 확인계좌의 입금내역을 집계하여 산출합니다. 미확인건은 대사제외하거나, 수동확인처리 할 경우, 미확인 합계에서 제외됩니다.
+							<br>
+							- 매월 초 통계데이터가 업데이트 됩니다.
+							<br>
+							- 최근 12개월 이내 데이터만 제공합니다.
+						</p>
+					</div>
+				</div>
+				<div class="tableWrap">
+					<table>
+						<thead>
+							<tr>
+								<td class="gray_1" rowspan="2">기간</td>
+								<td class="gray_1" colspan="2">전체 합계</td>
+								<td class="gray_1" colspan="2">자동확인 합계</td>
+								<td class="gray_1" colspan="2">전체 합계</td>
+								<td class="gray_1" colspan="2">자동확인 합계</td>
+							</tr>
+							<tr>
+								<td class="gray_1">금액</td>
+								<td class="gray_1">건수</td>
+								<td class="gray_1">금액</td>
+								<td class="gray_1">건수</td>
+								<td class="gray_1">금액</td>
+								<td class="gray_1">건수</td>
+								<td class="gray_1">금액</td>
+								<td class="gray_1">건수</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>합계</td>
+								<td class="blue">900</td>
+								<td class="blue">90</td>
+								<td>1150</td>
+								<td>70</td>
+								<td>100</td>
+								<td>12</td>
+								<td>100</td>
+								<td>8</td>
+							</tr>
+							<tr>
+								<td>2023-11</td>
+								<td class="blue">100</td>
+								<td class="blue">10</td>
+								<td>500</td>
+								<td>5</td>
+								<td>30</td>
+								<td>3</td>
+								<td>20</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td>2023-10</td>
+								<td class="blue">100</td>
+								<td class="blue">10</td>
+								<td>500</td>
+								<td>5</td>
+								<td>30</td>
+								<td>3</td>
+								<td>20</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td>2023-09</td>
+								<td class="blue">100</td>
+								<td class="blue">10</td>
+								<td>500</td>
+								<td>5</td>
+								<td>30</td>
+								<td>3</td>
+								<td>20</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td>2023-08</td>
+								<td class="blue">100</td>
+								<td class="blue">10</td>
+								<td>500</td>
+								<td>5</td>
+								<td>30</td>
+								<td>3</td>
+								<td>20</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td>2023-07</td>
+								<td class="blue">100</td>
+								<td class="blue">10</td>
+								<td>500</td>
+								<td>5</td>
+								<td>30</td>
+								<td>3</td>
+								<td>20</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td>2023-06</td>
+								<td class="blue">100</td>
+								<td class="blue">10</td>
+								<td>500</td>
+								<td>5</td>
+								<td>30</td>
+								<td>3</td>
+								<td>20</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td>2023-05</td>
+								<td class="blue">100</td>
+								<td class="blue">10</td>
+								<td>500</td>
+								<td>5</td>
+								<td>30</td>
+								<td>3</td>
+								<td>20</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td>2023-04</td>
+								<td class="blue">100</td>
+								<td class="blue">10</td>
+								<td>500</td>
+								<td>5</td>
+								<td>30</td>
+								<td>3</td>
+								<td>20</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td>2023-03</td>
+								<td class="blue">100</td>
+								<td class="blue">10</td>
+								<td>500</td>
+								<td>5</td>
+								<td>30</td>
+								<td>3</td>
+								<td>20</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td>2023-02</td>
+								<td class="blue">100</td>
+								<td class="blue">10</td>
+								<td>500</td>
+								<td>5</td>
+								<td>30</td>
+								<td>3</td>
+								<td>20</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td>2023-01</td>
+								<td class="blue">100</td>
+								<td class="blue">10</td>
+								<td>500</td>
+								<td>5</td>
+								<td>30</td>
+								<td>3</td>
+								<td>20</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td>2022-12</td>
+								<td class="blue">100</td>
+								<td class="blue">10</td>
+								<td>500</td>
+								<td>5</td>
+								<td>30</td>
+								<td>3</td>
+								<td>20</td>
+								<td>2</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<p class="underTable">* 최근 12개월 이내 데이터만 제공합니다.</p>
+			</article>
+		</section>
+	</main>
+	<footer>
+		<div class="footerWrap">
+			<div class="left">
+				<div class="row flexWrap">
+					<p class="footerTerms" id="footer_term_1">이용약관</p>
+					<span>|</span>
+					<p class="footerTerms" id="footer_term_2"><b>개인정보처리방침</b></p>
+					<span>|</span>
+					<p class="footerTerms" id="footer_term_3">이메일무단수집거부</p>
+					<span>|</span>
+					<p>s-cash@only1fs.com</p>
+				</div>
+				<div class="row flexWrap">
+					<p>(주) 온리원</p>
+					<span>|</span>
+					<p>대표이사 최호식</p>
+					<span>|</span>
+					<p>사업자등록번호 220-88-21655</p>
+					<span>|</span>
+					<p>특허번호 10-1089183</p>
+					<span>|</span>
+					<a href="javascript:window.open('https://9p9j3.channel.io/home', '_blank');">고객센터</a>
+				</div>
+				<div class="row flexWrap">
+					<a href="javascript:window.open('https://www.ftc.go.kr/bizCommPop.do?wrkr_no=2208821645', '_blank');">사업자정보 확인</a>
+					<span>|</span>
+					<p>소재지 경기도 하남시 미사대로 520 현대지식산업센터 한강미사2차 D동 5층 545호</p>
+				</div>
+				<div class="row flexWrap">
+					<p style="color:#999; font-weight:normal;">ⓒ2019 ONLY1 Inc. All rights reserved.</p>
+				</div>
+				<img class="inipayLogo" src='https://image.inicis.com/mkt/certmark/inipay/inipay_43x43_gray.png' alt='클릭하시면 이니시스 결제시스템의 유효성을 확인하실 수 있습니다.' onclick="javascript:window.open('https://mark.inicis.com/mark/popup_v3.php?mid=BILlseller','mark','scrollbars=no,resizable=no,width=565,height=683');">
+			</div>
+			<div class="right">
+				<img src="./img/sellerbotLogo.svg" alt="sellerbot">
+			</div>
+		</div>
+	</footer>
+</body>
+
+</html>
