@@ -17,6 +17,7 @@
   import manageMallSample from "$lib/img/manage_mall_sample.png";
   import fastSettledSample from "$lib/img/fast_settled_sample.png";
   import sodeoneSample from "$lib/img/sodeone_sample.png";
+  import bankbotSample from "$lib/img/bankbot_sample.png";
   import htmlLogo from "$lib/img/logos/html_logo.png";
   import svelteLogo from "$lib/img/logos/svelte_logo.png";
   import jsLogo from "$lib/img/logos/javascript_logo.png";
@@ -156,7 +157,19 @@
       externalLink: null,
       clicked: false,
     },
-	{
+    {
+      title: "Sellerbot Cash Bankbot",
+      contents: `판매몰 주문내역과 등록된 계좌의 입금내역을 자동으로 매칭 시켜주는 자동입금대사 서비스입니다.<br>
+      주문/입금 매칭내역, 통계, 대사제외 단어설정, 계좌등록 등의 서비스 페이지를 제작하였습니다.`,
+      skills: [htmlLogo, jsLogo, sassLogo],
+      skillStacks: ["html", "js", "scss"],
+      link: "/bankbot",
+      titleImgSrc: sellerbotLogo,
+      sampleImg: bankbotSample,
+      externalLink: null,
+      clicked: false,
+    },
+	  {
 			title: "Sellerbot Cash Fast Settle",
 			contents: `셀러봇캐시에 등록된 쇼핑몰에 대한 정산예정금을<br>
 			정산예정일보다 빠르게 활용할 수 있도록 미리 정산해주는 서비스 입니다.`,
