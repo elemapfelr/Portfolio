@@ -55,4 +55,5 @@
 	{skillStacks}
 	{desc}
 	{link}
+	demoLink=true
 />
