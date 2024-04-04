@@ -48,7 +48,7 @@
 			desc: "지역적 상태 관리용 객체를 선언하여 변화 감지",
 		},
 	];
-	let link = "/demo/sellerbot_mall_manage/index";
+	let link = "http://duknock.xyz:81/sellerbot_mall_manage/index.html";
 </script>
 
 <InfoBoard
