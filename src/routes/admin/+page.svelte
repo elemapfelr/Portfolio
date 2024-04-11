@@ -23,7 +23,7 @@
   let title = "Admin Dashboard";
   let simpleDesc =
     "본 프로젝트는 Docker를 활용하여 빌드되는 내부 서비스 관리용 대시보드로, Node.js 웹 서버와 EJS 템플릿 엔진을 기반으로 구축되었습니다.";
-  let galleryType = "multi";
+  let galleryType = "grid";
   let skillStacks = [
     "docker",
     "gitlab",

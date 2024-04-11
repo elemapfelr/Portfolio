@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from "svelte";
 	import { fly } from "svelte/transition";
+	import Modal from "$lib/components/common/Modal.svelte";
 
 	export let title;
 	export let simpleDesc;
@@ -70,11 +71,18 @@
 
 			// 애니메이션 시작
 			fadeImages();
+		} else if (galleryType == "grid") {
+
 		}
 	});
 
 	function openWindow() {
 		window.open(link, "_blank");
+	}
+
+	let modalContent = null;
+	function setModalContent(prop) {
+		modalContent = prop;
 	}
 </script>
 
@@ -100,7 +108,20 @@
 			<div id="progress-bar"></div>
 		</div>
 	{:else if galleryType == "grid"}
-		<div class="gallery grid"></div>
+		<div class="gallery grid">
+			{#each galleryImg as item}
+				<!-- svelte-ignore missing-declaration -->
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<!-- svelte-ignore a11y-no-static-element-interactions -->
+				<div class="imgWrap"
+					on:click={() => {
+						setModalContent(item);
+				  	}}
+				>
+					<img src={item} alt="">
+				</div>
+			{/each}
+		</div>
 	{:else if galleryType == "one"}
 		<div class="gallery"></div>
 	{/if}
@@ -128,6 +149,7 @@
 			</p>
 		</button>
 	{/if}
+	<Modal content={modalContent} />
 </div>
 
 <style lang="scss">
@@ -215,6 +237,34 @@
 					left: 0;
 					transition: opacity 2s ease;
 					opacity: 0;
+				}
+			}
+
+			&.grid {
+				width: 100%;
+				max-width: 920px;
+				height: auto;
+				display: flex;
+				flex-wrap: wrap;
+				// box-shadow: 0 5px 10px #20202044;
+				gap: 5px;
+
+				.imgWrap {
+					width: calc(100% / 3 - 10px);
+					height: 100%;
+					box-shadow: 0 0 5px #20202044;
+					border-radius: 10px;
+
+					transition: all 0.3s;
+
+					&:hover {
+						transform: scale(1.05);
+					}
+
+					img{
+						width: 100%;
+						height: auto;
+					}
 				}
 			}
 		}
@@ -398,6 +448,13 @@
 	}
 	@media screen and (max-width: 720px) {
 		.infoBoard {
+			.gallery{
+				&.grid {
+					.imgWrap {
+						width: calc(100% / 2 - 5px);
+					}
+				}
+			}
 			button.go {
 				&:hover {
 					padding: 10px 10px;

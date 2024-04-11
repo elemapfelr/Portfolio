@@ -2,7 +2,7 @@
   import { fade } from "svelte/transition";
   import { onMount } from "svelte";
   import Grid from "$lib/components/intro/Grid.svelte";
-  import Modal from "$lib/components/intro/Modal.svelte";
+  import Modal from "$lib/components/common/Modal.svelte";
   import infoLogo from "$lib/img/info_logo.svg";
   import portfolioLogo from "$lib/img/portfolio_logo.png";
   import omockLogo from "$lib/img/omock_logo.svg";

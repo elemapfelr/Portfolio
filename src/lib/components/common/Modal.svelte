@@ -11,11 +11,11 @@
 {#if content}
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div
-    transition:fade={{ duration: 500 }}
+    transition:fade={{ duration: 300 }}
     class="modal-overlay"
     on:click={modalClose}
   >
-    <div class="modal-content" transition:fly={{ y: 200, duration: 500 }}>
+    <div class="modal-content" transition:fly={{ y: 200, duration: 300 }}>
       <img src={content} alt="" />
     </div>
   </div>
