@@ -25,7 +25,7 @@
 
 		const click = new Tone.MembraneSynth().toDestination();
 		const loop = new Tone.Loop((time) => {
-			click.triggerAttackRelease("C2", "8n", time);
+			click.triggerAttackRelease("C2", "64n", time);
 		}, "4n");
 
 		metronome = {
@@ -303,9 +303,8 @@
 			class="refresh"
 			on:click={() => {
 				drumSoundsPromise = audioCtx();
-			}}>Refresh <i class="fa-solid fa-rotate"></i></button
+			}}>Start Drum Pad <i class="fa-solid fa-rotate"></i></button
 		>
-		<div class="drumPad"></div>
 	{:then pads}
 		<div class="metronome">
 			<div class="metronome-input">
@@ -352,6 +351,9 @@
 			{#each pads as item}
 				<Pad keyName={item.keyName} sound={item.sound} clickSound={item.clickSound} />
 			{/each}
+		</div>
+		<div class="align-right">
+			<a href="/looppad">Loop Pad</a>
 		</div>
 	{/await}
 </div>
@@ -428,6 +430,30 @@
 			// background-color: #363636;
 			// padding: 20px;
 			// box-shadow: 3px 5px 8px #000a;
+		}
+
+		.align-right {
+			width: 415px;
+			margin-top: 10px;
+			display: flex;
+			justify-content: right;
+
+			a {
+				border: none;
+				padding: 5px 10px;
+				background-color: #363636;
+				border: 2px solid #777;
+				color: #777;
+				cursor: pointer;
+				transition: all 0.2s;
+				text-decoration: none;
+				font-size: 0.8rem;
+
+				&:hover {
+					color: #ccc;
+					border-color: #ccc;
+				}
+			}
 		}
 	}
 </style>
