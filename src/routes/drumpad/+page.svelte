@@ -1,10 +1,12 @@
 <script>
+	import { onDestroy } from "svelte";
 	import * as Tone from "tone";
 	import Pad from "$lib/components/drumpad/Pad.svelte";
 
 	let metronomeIsActive = false;
 	let bpm = 120;
 	let metronome;
+	let drumSounds;
 	let holdStartTimeoutId = null;
 	let increaseIntervalId = null;
 
@@ -19,32 +21,129 @@
 	}
 
 	// 오디오 컨텍스트 시작
-	let drumSoundsPromise = audioCtx();
 	async function audioCtx() {
 		await Tone.start();
-
-		const click = new Tone.MembraneSynth().toDestination();
-		const loop = new Tone.Loop((time) => {
-			click.triggerAttackRelease("C2", "64n", time);
-		}, "4n");
-
-		metronome = {
-			start: () => {
-				Tone.Transport.bpm.value = bpm;
-				Tone.Transport.start();
-				loop.start(0);
+		setupDrumSounds();
+		setupMetronome();
+		return [
+			{
+				keyName: "1",
+				sound: "Kick",
+				clickSound: () => {
+					playSound("kick", "C2", "8n");
+				},
 			},
-			stop: () => {
-				loop.stop();
-				Tone.Transport.stop();
+			{
+				keyName: "2",
+				sound: "Snare",
+				clickSound: () => {
+					drumSounds["snare"].triggerAttackRelease("16n", Tone.now());
+				},
 			},
-			setBpm: (newBpm) => {
-				bpm = newBpm;
-				Tone.Transport.bpm.value = bpm;
+			{
+				keyName: "3",
+				sound: "Hihat-Closed",
+				clickSound: () => {
+					playSound("hihatClosed", "32n");
+				},
 			},
-		};
+			{
+				keyName: "4",
+				sound: "Hihat-Open",
+				clickSound: () => {
+					playSound("hihatOpen", "32n");
+				},
+			},
+			{
+				keyName: "Q",
+				sound: "Tom-Low",
+				clickSound: () => {
+					playSound("tomLow", "G2", "8n");
+				},
+			},
+			{
+				keyName: "W",
+				sound: "Tom-Mid",
+				clickSound: () => {
+					playSound("tomMid", "C3", "8n");
+				},
+			},
+			{
+				keyName: "E",
+				sound: "Tom-High",
+				clickSound: () => {
+					playSound("tomHigh", "E3", "8n");
+				},
+			},
+			{
+				keyName: "R",
+				sound: "Clap",
+				clickSound: () => {
+					drumSounds["clap"].triggerAttackRelease("16n", Tone.now());
+				},
+			},
+			{
+				keyName: "A",
+				sound: "Cowbell",
+				clickSound: () => {
+					playSound("cowbell", "G4", "16n");
+				},
+			},
+			{
+				keyName: "S",
+				sound: "Crash-Cymbal",
+				clickSound: () => {
+					playSound("crashCymbal", "32n");
+				},
+			},
+			{
+				keyName: "D",
+				sound: "Ride-Cymbal",
+				clickSound: () => {
+					playSound("rideCymbal", "32n");
+				},
+			},
+			{
+				keyName: "F",
+				sound: "Ride-Bell",
+				clickSound: () => {
+					playSound("rideBell", "G5", "16n");
+				},
+			},
+			{
+				keyName: "Z",
+				sound: "Bongo-High",
+				clickSound: () => {
+					playSound("bongoHigh", "E4", "16n");
+				},
+			},
+			{
+				keyName: "X",
+				sound: "Bongo-Low",
+				clickSound: () => {
+					playSound("bongoLow", "G3", "16n");
+				},
+			},
+			{
+				keyName: "C",
+				sound: "Conga-High",
+				clickSound: () => {
+					playSound("congaHigh", "E2", "8n");
+				},
+			},
+			{
+				keyName: "V",
+				sound: "Conga-Low",
+				clickSound: () => {
+					playSound("congaLow", "G2", "8n");
+				},
+			},
+		];
+	}
 
-		const drumSounds = {
+	function setupDrumSounds() {
+		// Define all your drum sounds here
+		drumSounds = {
 			kick: new Tone.MembraneSynth().toDestination(),
 			snare: new Tone.NoiseSynth({
 				noise: { type: "white" },
@@ -159,131 +258,43 @@
 				octaves: 4,
 			}).toDestination(),
 		};
-
-		function playSound(soundName, note = "C2", duration = "8n") {
-			const sound = drumSounds[soundName];
-			if (sound) {
-				sound.triggerAttackRelease(note, duration, Tone.now());
-			}
-		}
-
-		let pads = [
-			{
-				keyName: "1",
-				sound: "Kick",
-				clickSound: () => {
-					playSound("kick", "C2", "8n");
-				},
-			},
-			{
-				keyName: "2",
-				sound: "Snare",
-				clickSound: () => {
-					drumSounds["snare"].triggerAttackRelease("16n", Tone.now());
-				},
-			},
-			{
-				keyName: "3",
-				sound: "Hihat-Closed",
-				clickSound: () => {
-					playSound("hihatClosed", "32n");
-				},
-			},
-			{
-				keyName: "4",
-				sound: "Hihat-Open",
-				clickSound: () => {
-					playSound("hihatOpen", "32n");
-				},
-			},
-			{
-				keyName: "Q",
-				sound: "Tom-Low",
-				clickSound: () => {
-					playSound("tomLow", "G2", "8n");
-				},
-			},
-			{
-				keyName: "W",
-				sound: "Tom-Mid",
-				clickSound: () => {
-					playSound("tomMid", "C3", "8n");
-				},
-			},
-			{
-				keyName: "E",
-				sound: "Tom-High",
-				clickSound: () => {
-					playSound("tomHigh", "E3", "8n");
-				},
-			},
-			{
-				keyName: "R",
-				sound: "Clap",
-				clickSound: () => {
-					drumSounds["clap"].triggerAttackRelease("16n", Tone.now());
-				},
-			},
-			{
-				keyName: "A",
-				sound: "Cowbell",
-				clickSound: () => {
-					playSound("cowbell", "G4", "16n");
-				},
-			},
-			{
-				keyName: "S",
-				sound: "Crash-Cymbal",
-				clickSound: () => {
-					playSound("crashCymbal", "32n");
-				},
-			},
-			{
-				keyName: "D",
-				sound: "Ride-Cymbal",
-				clickSound: () => {
-					playSound("rideCymbal", "32n");
-				},
-			},
-			{
-				keyName: "F",
-				sound: "Ride-Bell",
-				clickSound: () => {
-					playSound("rideBell", "G5", "16n");
-				},
-			},
-			{
-				keyName: "Z",
-				sound: "Bongo-High",
-				clickSound: () => {
-					playSound("bongoHigh", "E4", "16n");
-				},
-			},
-			{
-				keyName: "X",
-				sound: "Bongo-Low",
-				clickSound: () => {
-					playSound("bongoLow", "G3", "16n");
-				},
-			},
-			{
-				keyName: "C",
-				sound: "Conga-High",
-				clickSound: () => {
-					playSound("congaHigh", "E2", "8n");
-				},
-			},
-			{
-				keyName: "V",
-				sound: "Conga-Low",
-				clickSound: () => {
-					playSound("congaLow", "G2", "8n");
-				},
-			},
-		];
-
-		return pads;
 	}
+
+	function setupMetronome() {
+		const click = new Tone.MembraneSynth().toDestination();
+		const loop = new Tone.Loop((time) => {
+			click.triggerAttackRelease("C2", "64n", time);
+		}, "4n");
+
+		metronome = {
+			start: () => {
+				Tone.Transport.bpm.value = bpm;
+				Tone.Transport.start();
+				loop.start(0);
+			},
+			stop: () => {
+				loop.stop();
+				Tone.Transport.stop();
+			},
+			setBpm: (newBpm) => {
+				bpm = newBpm;
+				Tone.Transport.bpm.value = bpm;
+			},
+		};
+	}
+
+	function playSound(soundName, note = "C2", duration = "8n") {
+		const sound = drumSounds[soundName];
+		sound.triggerAttackRelease(note, duration, Tone.now());
+	}
+
+	onDestroy(() => {
+		// 정리 로직
+		Object.values(drumSounds).forEach((synth) => synth.dispose());
+		metronome.stop();
+	});
+
+	let drumSoundsPromise = audioCtx();
 
 	function toggleMetronome() {
 		metronomeIsActive = !metronomeIsActive;

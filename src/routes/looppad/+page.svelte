@@ -7,8 +7,16 @@
 	let bpm = 120;
 	let currentBeat = -1;
 	let audioContextStarted = false;
+	let synth, loop;
 	let holdStartTimeoutId = null;
 	let increaseIntervalId = null;
+
+	async function initializeAudioContext() {
+		await Tone.start();
+		audioContextStarted = true;
+		Tone.Transport.bpm.value = bpm;
+		setupSequence();
+	}
 
 	function stopIncreasing() {
 		// 초기에 설정된 timeout과 interval을 취소
@@ -20,16 +28,9 @@
 		increaseIntervalId = null;
 	}
 
-	async function initializeAudioContext() {
-		await Tone.start();
-		audioContextStarted = true;
-		Tone.Transport.bpm.value = bpm;
-		setupSequence();
-	}
-
 	function setupSequence() {
-		const synth = new Tone.MembraneSynth().toDestination();
-		const loop = new Tone.Sequence(
+		synth = new Tone.MembraneSynth().toDestination();
+		loop = new Tone.Sequence(
 			(time, index) => {
 				currentBeat = index;
 				if (cells[index]) {
@@ -66,26 +67,20 @@
 		}
 	}
 
-	onMount(async () => {
-		await Tone.start(); // Tone.js 시작
+	onMount(() => {
+		initializeAudioContext();
+	});
 
-		const synth = new Tone.MembraneSynth().toDestination();
-		const loop = new Tone.Sequence(
-			(time, index) => {
-				currentBeat = index; // 현재 비트 위치 갱신
-				if (cells[index]) {
-					synth.triggerAttackRelease("C2", "8n", time);
-				}
-			},
-			[...Array(16).keys()],
-			"16n"
-		);
-
-		Tone.Transport.bpm.value = bpm;
-		Tone.Transport.loopEnd = "1m"; // 1마디
-		Tone.Transport.loop = true;
-
-		loop.start(0);
+	onDestroy(() => {
+		// 정리 로직
+		if (loop) {
+			loop.dispose();
+		}
+		if (synth) {
+			synth.dispose();
+		}
+		Tone.Transport.stop();
+		Tone.Transport.cancel(0);
 	});
 </script>
 
