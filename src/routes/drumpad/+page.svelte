@@ -290,8 +290,12 @@
 
 	onDestroy(() => {
 		// 정리 로직
-		Object.values(drumSounds).forEach((synth) => synth.dispose());
-		metronome.stop();
+		if (drumSounds) {
+			Object.values(drumSounds).forEach((synth) => synth.dispose());
+		}
+		if (metronome) {
+			metronome.stop();
+		}
 	});
 
 	let drumSoundsPromise = audioCtx();
