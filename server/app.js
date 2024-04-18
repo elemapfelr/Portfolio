@@ -1,22 +1,11 @@
-const OpenAI = require("openai");
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const express = require("express");
 const app = express();
 const path = require("path");
 const { setupWebSocket } = require("./controller/webSocketController");
 
-async function main() {
-	const completion = await openai.chat.completions.create({
-		messages: [{ role: "system", content: "You are a helpful assistant." }],
-		model: "gpt-3.5-turbo",
-	});
-
-	console.log(completion.choices[0]);
-}
-
-// main();
-
 setupWebSocket(3001);
+app.use(express.json({ limit: "100mb" }));
+app.use("/api/gpt", require("./routes/openaiGPT"));
 
 // Svelte 정적 파일 서빙
 app.use(express.static("public/build")); // 'public'은 빌드된 파일이 있는 디렉토리
