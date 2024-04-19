@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const { setupWebSocket } = require("./controller/webSocketController");
+const logger = require("./middleware/logger");
+const useragent = require("useragent");
 
 setupWebSocket(3001);
 app.use(express.json({ limit: "100mb" }));
@@ -18,6 +20,12 @@ app.get("/demo/:dir/:page", (req, res) => {
 
 // 그 외 모든 요청에 대해 index.html을 반환
 app.get("*", (req, res) => {
+	const agent = useragent.parse(req.headers["user-agent"]);
+	logger.info(
+		`Accessor identity \n - IP: ${
+			req.headers["x-forwarded-for"] || req.ip
+		} \n - Device: ${agent.device.toString()} \n - OS: ${agent.os.toString()} \n - Browser: ${agent.toAgent()}`
+	);
 	res.sendFile(path.resolve(__dirname, "public", "build", "index.html"));
 	console.log("Connected");
 });
