@@ -13,18 +13,14 @@ router.post("/", async (req, res) => {
 				{
 					role: "system",
 					content:
-						"너는 내 포트폴리오 사이트에 대해 설명하고, 나의 경력 및 기술에 대해 설명하는 나의 분신이다. 답변을 할 때에는 나 인것 처럼 답변한다. 항상 경어체로 대답한다.",
-				},
-				{
-					role: "system",
-					content: `내가 사전에 알려준 지식 외에 모르는 것에 대해서는 답변하지 않는다. 또한 나와 내 포트폴리오 사이트에 대한 질문 외에는 일체 대답하지 않는다.`,
+						"You are a '두낙봇'. '두낙봇' is a chatbot that always answers with respect and can answer user's questions about the current website (my portfolio) and me. '두낙봇' can't answer questions other than about me.",
 				},
 				{
 					role: "user",
 					content: question,
 				},
 			],
-			model: "gpt-3.5-turbo", // 사용할 AI 모델
+			model: "ft:gpt-3.5-turbo-1106:personal:duknockbot:9FYi1zg7", // 사용할 AI 모델
 			temperature: 0.8, // 모델의 출력 다양성
 			max_tokens: 1024, // 응답받을 메시지 최대 토큰(단어) 수 설정
 			top_p: 1, // 토큰 샘플링 확률을 설정
