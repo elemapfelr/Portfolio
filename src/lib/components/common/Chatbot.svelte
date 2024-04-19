@@ -5,7 +5,7 @@
 	let isOpen = false;
 	let messages = [
 		{
-			text: "안녕하세요! 저는 GPT기반의 LLM모델을 튜닝한 맞춤형 챗봇 '준혁봇'입니다. 아직 미숙한 점이 많아 틀린 정보를 제공할 수 있으니, 이 점 감안해주세요!",
+			text: "안녕하세요! 저는 GPT-3.5-Turbo 기반의 LLM 모델을 튜닝한 맞춤형 챗봇 '준혁봇'입니다. 아직 미숙한 점이 많아 틀린 정보를 제공할 수 있으니, 이 점 감안해주세요!",
 			sender: "bot",
 		},
 	];
@@ -21,16 +21,22 @@
 				lastMessage.text = res;
 				messages = [...messages, lastMessage];
 				// 아래로 스크롤
-				document
-					.querySelector(".messages")
-					.scrollTo({ behavior: "smooth", top: document.querySelector(".messages").offsetHeight });
+				document.querySelector(".messages").scrollTo({
+					behavior: "smooth",
+					top: [...document.querySelectorAll(".messages .message")].reduce((acc, cur) => {
+						return (acc += cur.offsetHeight + 5);
+					}, 0),
+				});
 			});
 			messages = [...messages, { img: loading_pulse, sender: "bot loading" }];
 			newMessage = ""; // 메시지 전송 후 입력칸 초기화
 			// 아래로 스크롤
-			document
-				.querySelector(".messages")
-				.scrollTo({ behavior: "smooth", top: document.querySelector(".messages").offsetHeight });
+			document.querySelector(".messages").scrollTo({
+				behavior: "smooth",
+				top: [...document.querySelectorAll(".messages .message")].reduce((acc, cur) => {
+					return (acc += cur.offsetHeight + 5);
+				}, 0),
+			});
 		}
 	}
 
@@ -83,7 +89,12 @@
 			{/each}
 		</div>
 		<div class="flex">
-			<input type="text" bind:value={newMessage} on:keyup={(e) => e.key === "Enter" && sendMessage()} />
+			<input
+				type="text"
+				placeholder="주의: 이 챗봇은 자주 틀립니다!"
+				bind:value={newMessage}
+				on:keyup={(e) => e.key === "Enter" && sendMessage()}
+			/>
 			<button on:click={sendMessage}><i class="fa-regular fa-paper-plane"></i></button>
 		</div>
 	</div>
@@ -117,7 +128,7 @@
 		right: 20px;
 		width: calc(90dvw - 20px);
 		max-width: 450px;
-		background-color: #000c;
+		background-color: #000d;
 		border-radius: 10px;
 		padding: 10px;
 		z-index: 1000;
@@ -193,6 +204,10 @@
 				&:focus {
 					outline: none;
 					border-color: #81ffef;
+				}
+
+				&::placeholder {
+					color: #999;
 				}
 			}
 			button {
