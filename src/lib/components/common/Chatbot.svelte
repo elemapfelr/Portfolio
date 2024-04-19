@@ -1,5 +1,6 @@
 <script>
 	import { fade, fly } from "svelte/transition";
+	import loading_pulse from "$lib/img/assets/loading_pulse.svg";
 
 	let isOpen = false;
 	let messages = [
@@ -16,6 +17,7 @@
 			askQuestion(newMessage).then((res) => {
 				// 여기서 챗봇의 응답을 처리할 수 있습니다.
 				let lastMessage = messages.pop();
+				lastMessage.img = null;
 				lastMessage.text = res;
 				messages = [...messages, lastMessage];
 				// 아래로 스크롤
@@ -23,8 +25,12 @@
 					.querySelector(".messages")
 					.scrollTo({ behavior: "smooth", top: document.querySelector(".messages").offsetHeight });
 			});
-			messages = [...messages, { text: "answering...", sender: "bot" }];
+			messages = [...messages, { img: loading_pulse, sender: "bot loading" }];
 			newMessage = ""; // 메시지 전송 후 입력칸 초기화
+			// 아래로 스크롤
+			document
+				.querySelector(".messages")
+				.scrollTo({ behavior: "smooth", top: document.querySelector(".messages").offsetHeight });
 		}
 	}
 
@@ -68,7 +74,11 @@
 		<div class="messages">
 			{#each messages as message}
 				<div class="message {message.sender}" transition:fade>
-					{message.text}
+					{#if message.img}
+						<img src={message.img} alt="response waiting" />
+					{:else}
+						{message.text}
+					{/if}
 				</div>
 			{/each}
 		</div>
@@ -125,7 +135,7 @@
 		}
 
 		.messages {
-			height: 250px;
+			height: 350px;
 			overflow-y: auto;
 
 			&::-webkit-scrollbar {
@@ -152,10 +162,18 @@
 				&.bot {
 					text-align: left;
 					background-position: left;
+
+					&.loading {
+						padding: 5px 10px;
+					}
 				}
 				&.user {
 					text-align: right;
 					background-position: right;
+				}
+
+				img {
+					width: 30px;
 				}
 			}
 		}
