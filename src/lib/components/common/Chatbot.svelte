@@ -2,7 +2,12 @@
 	import { fade, fly } from "svelte/transition";
 
 	let isOpen = false;
-	let messages = [{ text: "Hello, how can I help you?", sender: "bot" }];
+	let messages = [
+		{
+			text: "안녕하세요! 저는 GPT기반의 LLM모델을 튜닝한 맞춤형 챗봇 '준혁봇'입니다. 아직 미숙한 점이 많아 틀린 정보를 제공할 수 있으니, 이 점 감안해주세요!",
+			sender: "bot",
+		},
+	];
 	let newMessage = "";
 
 	async function sendMessage() {
@@ -59,6 +64,7 @@
 <!-- 대화창 -->
 {#if isOpen}
 	<div class="chat-window" transition:fly={{ y: 100 }}>
+		<span class="tag">Beta Test</span>
 		<div class="messages">
 			{#each messages as message}
 				<div class="message {message.sender}" transition:fade>
@@ -105,6 +111,18 @@
 		border-radius: 10px;
 		padding: 10px;
 		z-index: 1000;
+		overflow: hidden;
+
+		span.tag {
+			position: absolute;
+			top: 0;
+			right: 0;
+			padding-right: 5px;
+			padding-left: 3px;
+			background-color: #777;
+			font-size: 0.6rem;
+			color: #dcdcdc;
+		}
 
 		.messages {
 			height: 250px;
@@ -127,6 +145,7 @@
 				padding: 10px;
 				border-radius: 5px;
 				font-size: 0.8rem;
+				letter-spacing: -0.5px;
 				background: linear-gradient(135deg, #81ffef 10%, #f067b4 100%);
 				background-size: 200%;
 
@@ -146,10 +165,11 @@
 			input {
 				width: 90%;
 				border: 1px solid #fff;
+				border-right: none;
 				background-color: transparent;
 				color: #fff;
 				font-size: 0.8rem;
-				letter-spacing: -0.8px;
+				letter-spacing: -0.5px;
 				padding: 8px;
 
 				&:focus {
