@@ -1,23 +1,21 @@
 {
-	"name": "node-express-app",
-	"version": "1.0.0",
-	"description": "Node Express 개인용 서버",
-	"main": "app.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "nodemon --legacy-watch app.js",
-		"start": "pm2 start ecosystem.config.js"
-	},
-	"author": "elemapfelr@gmail.com",
-	"license": "UPL-1.0",
-	"dependencies": {
-		"express": "^4.18.2",
-		"pm2": "^5.3.1",
-		"winston": "3.11.0",
-		"winston-daily-rotate-file": "5.0.0",
-		"useragent": "2.3.0",
-		"ws": "8.14.2",
-		"openai": "4.36.0",
-		"nodemon": "3.1.0"
-	}
+  "name": "node-express-app",
+  "version": "1.0.0",
+  "description": "Node Express 개인용 서버",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --legacy-watch app.js",
+    "start": "pm2 start ecosystem.config.js"
+  },
+  "author": "elemapfelr@gmail.com",
+  "license": "UPL-1.0",
+  "dependencies": {
+    "express": "^4.18.2",
+    "pm2": "^5.3.1",
+    "useragent": "2.3.0",
+    "ws": "8.14.2",
+    "openai": "4.36.0",
+    "nodemon": "3.1.0"
+  }
 }
